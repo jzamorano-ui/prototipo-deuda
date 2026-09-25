@@ -829,8 +829,11 @@
      los controles de la propia pantalla, sin mandos por fuera. */
   /* Del más nuevo al más antiguo, como lista el resto de la plataforma. */
   var PERIODOS = {
+    /* Primer cierre de Septiembre: se genera, no se consulta. Usa el
+       loader aunque su chip ya diga "Periodo cerrado". */
     "2026-09-cerrado": cerrado("Septiembre 2026", "05/10/26", {
       opcion:"Septiembre 2026 (cerrado)",
+      carga:"loader",
       deuda:"$311.190.400", deudaUf:"8.085,178 UF",
       pactado:"$842.190.400", pactadoUf:"21.881,327 UF",
       pagado:"$531.000.000", pagadoUf:"13.796,150 UF",
@@ -1385,6 +1388,12 @@
     estado.pagina = 1;
     var p = periodoActual();
     var cerrado = p.caso === "cerrado";
+    /* El skeleton es para lo que ya sabemos que existe: un periodo que
+       lleva tiempo cerrado y consolidado, y que solo se está consultando.
+       Un periodo recién cerrado se genera por primera vez -es incierto,
+       no una consulta- así que usa el mismo loader que el periodo en curso,
+       aunque su chip y su aviso ya digan "cerrado". */
+    var consulta = cerrado && p.carga !== "loader";
     estado.filtros = {};
     FILTROS.forEach(function(f){ $(f.id).value = ""; });
     sincronizarCampos();
@@ -1394,7 +1403,7 @@
     pintarAviso(null);
     pintarPeriodoSeleccionado(p, false);
 
-    if (cerrado) {
+    if (consulta) {
       esqueleto(p);
     } else {
       bloqueVacio("Generando deuda del periodo", "Puede tardar unos minutos; mantén esta pantalla abierta.", "rueda");
@@ -1403,7 +1412,7 @@
     window.setTimeout(function(){
       cargando(btn, false);
       render(true);
-    }, cerrado ? 1200 : 1800);
+    }, consulta ? 1200 : 1800);
   });
 
   /* ── Exportar la deuda ───────────────────────────────────────────────── */
