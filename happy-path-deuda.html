@@ -706,20 +706,6 @@
         </div>
       </div>
       <div class="campo">
-        <label id="lb-f-eepc">Tipo EEPC</label>
-        <div class="combo" data-combo="f-eepc">
-          <button class="combo-trigger" type="button" id="t-f-eepc" aria-haspopup="listbox" aria-expanded="false" aria-labelledby="lb-f-eepc t-f-eepc">
-            <span class="combo-valor">Selecciona</span>
-            <span class="flecha" aria-hidden="true"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg></span>
-          </button>
-          <ul class="combo-panel" role="listbox" aria-labelledby="lb-f-eepc" hidden>
-            <li role="option" data-valor="Pactado" data-chip="Pactado" aria-selected="false">Pactado</li>
-            <li role="option" data-valor="Desconocido" data-chip="Desconocido" aria-selected="false">Desconocido</li>
-          </ul>
-          <input type="hidden" id="f-eepc" value="">
-        </div>
-      </div>
-      <div class="campo">
         <label id="lb-f-medio">Medio de pago</label>
         <div class="combo" data-combo="f-medio">
           <button class="combo-trigger" type="button" id="t-f-medio" aria-haspopup="listbox" aria-expanded="false" aria-labelledby="lb-f-medio t-f-medio">
@@ -977,7 +963,6 @@
     {id:"f-rut-pag",    etiqueta:"RUT pagador",    campo:"pagador",   parcial:true},
     {id:"f-tipo-deuda", etiqueta:"Tipo de deuda",  campo:"tipoDeuda"},
     {id:"f-tipo-cot",   etiqueta:"Tipo cotizante", campo:"tipoCot"},
-    {id:"f-eepc",       etiqueta:"Tipo EEPC",      campo:"eepc"},
     {id:"f-medio",      etiqueta:"Medio de pago",  campo:"medioPago"}
   ];
   var $ = function(id){ return document.getElementById(id); };
@@ -1444,7 +1429,7 @@
 
   /* ── Modal de filtros ────────────────────────────────────────────────── */
 
-  var campos = ["f-rut-cot","f-rut-pag","f-tipo-deuda","f-tipo-cot","f-eepc","f-medio"];
+  var campos = ["f-rut-cot","f-rut-pag","f-tipo-deuda","f-tipo-cot","f-medio"];
 
   function revisarFiltros(){
     var alguno = campos.some(function(id){ return $(id).value.trim() !== ""; });
