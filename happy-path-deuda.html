@@ -194,6 +194,29 @@
   .tabla-barra{display:flex; align-items:center; justify-content:space-between; gap:16px; padding:24px; flex-wrap:wrap}
   .tabla-barra h2{margin:0; font-size:18px; line-height:22px; font-weight:700; color:var(--tinta)}
   .tabla-acciones{display:flex; align-items:center; gap:16px}
+  /* Vistas del detalle: la misma deuda por afiliado o por pagador. */
+  .vistas{display:flex; gap:8px; border-bottom:1px solid var(--linea)}
+  .vista{
+    height:44px; padding:0 20px; margin-bottom:-1px;
+    font-size:16px; line-height:20px; font-weight:700; color:var(--gris-2);
+    border-bottom:2px solid transparent;
+  }
+  .vista:hover{color:var(--tinta-2)}
+  .vista[aria-selected="true"]{color:var(--verde); border-bottom-color:var(--verde)}
+  /* Menú de Exportar deuda: primero la vista activa, después la consolidada. */
+  .exportar{position:relative}
+  .menu-exportar{
+    position:absolute; top:calc(100% + 4px); right:0; z-index:6; width:100%; min-width:max-content;
+    margin:0; padding:0; list-style:none;
+    background:var(--blanco); border:1px solid var(--linea-input);
+    box-shadow:0 4px 10px rgba(23,33,51,.12);
+  }
+  .menu-exportar li + li{border-top:1px solid var(--lista-divisor)}
+  .menu-exportar button{
+    display:block; width:100%; padding:16px; text-align:left;
+    font-size:16px; line-height:24px; color:var(--tinta);
+  }
+  .menu-exportar button:hover, .menu-exportar button:focus-visible{background:var(--lista-hover)}
   .filtros-aplicados{
     display:flex; flex-direction:column; gap:12px;
     padding:16px 24px; border-bottom:1px solid var(--linea);
@@ -221,7 +244,7 @@
   .tabla-scroll::-webkit-scrollbar-track{background:var(--linea)}
   .tabla-scroll::-webkit-scrollbar-thumb{background:var(--verde); border-radius:999px}
   .tabla-scroll{scrollbar-color:var(--verde) var(--linea); scrollbar-width:thin}
-  table{border-collapse:collapse; width:1730px; table-layout:fixed}
+  table{border-collapse:collapse; table-layout:fixed}
   thead th{
     height:72px; background:var(--th); border-bottom:1px solid var(--linea);
     padding:12px; text-align:left; vertical-align:middle;
@@ -580,7 +603,7 @@
                 <div class="uf" id="m-pagado-uf">0,000 UF</div>
               </div>
               <div class="metrica">
-                <div class="rotulo">N° de cotizantes</div>
+                <div class="rotulo">N° de afiliados</div>
                 <div class="valor" id="m-cotizantes">0</div>
               </div>
               <div class="metrica">
@@ -590,20 +613,32 @@
             </div>
           </section>
 
+          <!-- Vistas del detalle -->
+          <div class="vistas" id="vistas" role="tablist" aria-label="Vista del detalle de la deuda" hidden>
+            <button class="vista" type="button" role="tab" id="tab-afiliados" data-vista="afiliados" aria-selected="true" aria-controls="tabla-card">Afiliados</button>
+            <button class="vista" type="button" role="tab" id="tab-pagadores" data-vista="pagadores" aria-selected="false" aria-controls="tabla-card" tabindex="-1">Pagadores</button>
+          </div>
+
           <!-- Detalle de la deuda -->
-          <section class="tabla-card" id="tabla-card" hidden>
+          <section class="tabla-card" id="tabla-card" role="tabpanel" aria-labelledby="tab-afiliados" hidden>
             <div class="tabla-barra">
               <h2>Detalle de la deuda</h2>
               <div class="tabla-acciones">
                 <button class="btn-link" type="button" id="btn-filtros">Ver filtros</button>
-                <button class="btn btn-sec" type="button" id="btn-exportar">
-                  <span class="btn-txt">
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                      <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><path d="M7 10l5 5 5-5"/><path d="M12 15V3"/>
-                    </svg>
-                    <span>Exportar deuda</span>
-                  </span>
-                </button>
+                <div class="exportar">
+                  <button class="btn btn-sec" type="button" id="btn-exportar" aria-haspopup="menu" aria-expanded="false" aria-controls="menu-exportar">
+                    <span class="btn-txt">
+                      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><path d="M7 10l5 5 5-5"/><path d="M12 15V3"/>
+                      </svg>
+                      <span>Exportar deuda</span>
+                    </span>
+                  </button>
+                  <ul class="menu-exportar" id="menu-exportar" role="menu" aria-labelledby="btn-exportar" hidden>
+                    <li role="none"><button type="button" role="menuitem" id="op-vista">Deuda por afiliado</button></li>
+                    <li role="none"><button type="button" role="menuitem" id="op-consolidada">Deuda consolidada</button></li>
+                  </ul>
+                </div>
               </div>
             </div>
             <div class="filtros-aplicados" id="filtros-aplicados" hidden>
@@ -624,7 +659,7 @@
             </div>
             <div id="tabla-datos">
             <div class="tabla-scroll">
-              <table>
+              <table id="tabla">
                 <thead><tr id="thead-fila"></tr></thead>
                 <tbody id="tbody"></tbody>
               </table>
@@ -667,7 +702,7 @@
     </div>
     <div class="modal-body">
       <div class="campo">
-        <label for="f-rut-cot">RUT cotizante</label>
+        <label for="f-rut-cot">RUT afiliado</label>
         <input id="f-rut-cot" type="text" placeholder="Ingresa RUT" autocomplete="off">
       </div>
       <div class="campo">
@@ -880,54 +915,88 @@
     compensado:["Compensación aplicada sobre lo pactado.", "El monto puede ser a favor o en contra."]
   };
 
-  var COLUMNAS = [
-    {k:"cotizante",  t:"RUT y nombre\ncotizante", w:200, fija:true},
+  /* Cada vista muestra solo lo suyo, según la estructura del Loop: del afiliado
+     cuelgan su tipo, sus montos, el compensado y el detalle del pago; el pagador
+     agrupa a sus afiliados. */
+  var COLUMNAS_AFILIADOS = [
+    {k:"cotizante",  t:"RUT y nombre\nafiliado", w:280, fija:true},
     {k:"tipoCot",    t:"Tipo cotizante", w:120, ayuda:"tipoCot"},
-    {k:"pagador",    t:"RUT y nombre pagador", w:250},
-    {k:"eepc",       t:"Tipo\nEEPC", w:120, ayuda:"eepc"},
+    {k:"nPagadores", t:"N° de\npagadores", w:100},
     {k:"cotizacion", t:"Cotización\nimpaga", w:110},
     {k:"pactado",    t:"Pactado", w:115},
     {k:"pagado",     t:"Pagado", w:115},
     {k:"deuda",      t:"Deuda", w:120},
     {k:"tipoDeuda",  t:"Tipo de\ndeuda", w:120, ayuda:"tipoDeuda"},
-    {k:"fechaPago",  t:"Fecha\npago", w:110},
-    {k:"medioPago",  t:"Medio\npago", w:100},
+    {k:"fechaPago",  t:"Fecha\npago", w:100},
+    {k:"medioPago",  t:"Medio\npago", w:160},
     {k:"montoPago",  t:"Monto\npago", w:110},
     {k:"compensado", t:"RUT compensado", w:140, ayuda:"compensado"}
   ];
 
+  /* Sin scroll: el nombre del pagador se lleva lo que necesita y el resto se reparte. */
+  var COLUMNAS_PAGADORES = [
+    {k:"pagador",    t:"RUT y nombre pagador", w:352, fija:true},
+    {k:"eepc",       t:"Tipo EEPC", ayuda:"eepc"},
+    {k:"nAfiliados", t:"N° de afiliados"},
+    {k:"pactado",    t:"Pactado"},
+    {k:"pagado",     t:"Pagado"},
+    {k:"deuda",      t:"Deuda"}
+  ];
+
+  function columnas(){ return estado.vista === "pagadores" ? COLUMNAS_PAGADORES : COLUMNAS_AFILIADOS; }
+
   var FILAS_BASE = [
-    {cotizacion:"01/08/26", cotizante:["10322567-K","Andrea González Soto"], tipoCot:"D",
+    {cotizacion:"01/08/26", cotizante:["10322567-K","Andrea González Soto"], nPagadores:"1", tipoCot:"D",
      pagador:["45654323-1","Clínica Alemana de Santiago S.A."], eepc:"Pactado",
      pactado:["$100.000","2,598 UF"], pagado:["$80.000","2,079 UF"], deuda:["$20.000","0,520 UF"],
      tipoDeuda:"DPP", fechaPago:"12/09/26", medioPago:"PAT", montoPago:"$80.000", compensado:"—"},
-    {cotizacion:"01/08/26", cotizante:["11622567-8","Marco Pizarro Lillo"], tipoCot:"D",
+    {cotizacion:"01/08/26", cotizante:["11622567-8","Marco Pizarro Lillo"], nPagadores:"1", tipoCot:"D",
      pagador:["56234544-0","Colegio Alemán de Santiago SpA"], eepc:"Pactado",
      pactado:["$40.000","1,039 UF"], pagado:["$30.000","0,779 UF"], deuda:["$10.000","0,260 UF"],
      tipoDeuda:"DPP", fechaPago:"13/09/26", medioPago:"PAT", montoPago:"$30.000", compensado:"—"},
-    {cotizacion:"01/08/26", cotizante:["17948884-2","Javiera Núñez Bravo"], tipoCot:"I",
+    {cotizacion:"01/08/26", cotizante:["17948884-2","Javiera Núñez Bravo"], nPagadores:"1", tipoCot:"I",
      pagador:["17948884-2","Javiera Núñez Bravo"], eepc:"Pactado",
      pactado:["$403.373","10,480 UF"], pagado:["$203.373","5,284 UF"], deuda:["$200.000","5,196 UF"],
      tipoDeuda:"DPP", fechaPago:"09/09/26", medioPago:"PAC", montoPago:"$203.373", compensado:"—"},
-    {cotizacion:"01/08/26", cotizante:["28831161-7","Rodrigo Cáceres Mansilla"], tipoCot:"D",
-     pagador:["78456765-2","Servicios Diagnósticos Alemana"], eepc:"Desconocido",
+    {cotizacion:"01/08/26", cotizante:["28831161-7","Rodrigo Cáceres Mansilla"], nPagadores:"1", tipoCot:"D",
+     pagador:["78456765-2","Servicios Diagnósticos Clínica Alemana Limitada"], eepc:"Desconocido",
      pactado:["$50.000","1,299 UF"], pagado:["$ —","0,000 UF"], deuda:["$50.000","1,299 UF"],
      tipoDeuda:"DNP", fechaPago:"13/09/26", medioPago:"—", montoPago:"—", compensado:["12345345-3","1,234 UF"]},
-    {cotizacion:"01/08/26", cotizante:["9455312-K","Paulina Ortiz Valdés"], tipoCot:"D",
+    {cotizacion:"01/08/26", cotizante:["9455312-K","Paulina Ortiz Valdés"], nPagadores:"1", tipoCot:"D",
      pagador:["45654323-1","Clínica Alemana de Santiago S.A."], eepc:"Pactado",
      pactado:["$35.000","0,909 UF"], pagado:["$ —","0,000 UF"], deuda:["$35.000","0,909 UF"],
      tipoDeuda:"IP", fechaPago:"—", medioPago:"—", montoPago:"—", compensado:"—"},
-    {cotizacion:"01/08/26", cotizante:["21335447-6","Sergio Bustamante Rojas"], tipoCot:"V",
+    {cotizacion:"01/08/26", cotizante:["21335447-6","Sergio Bustamante Rojas"], nPagadores:"1", tipoCot:"V",
      pagador:["21335447-6","Sergio Bustamante Rojas"], eepc:"Pactado",
      pactado:["$25.000","0,650 UF"], pagado:["$ —","0,000 UF"], deuda:["$25.000","0,650 UF"],
      tipoDeuda:"DNP", fechaPago:"09/09/26", medioPago:"—", montoPago:"—", compensado:"—"}
   ];
 
+  /* Vista por pagador: se calcula desde las mismas filas, así las dos vistas
+     siempre suman lo mismo. */
+  var UF = 38489;
+  function aPesos(v){ return /\$\s*—/.test(v) ? 0 : (parseInt(v.replace(/[^\d]/g, ""), 10) || 0); }
+  function fmtPesos(n){ return n === 0 ? "$ —" : "$" + n.toLocaleString("es-CL"); }
+  function fmtUF(n){ return (n / UF).toLocaleString("es-CL", {minimumFractionDigits:3, maximumFractionDigits:3}) + " UF"; }
+  function porPagador(filas){
+    var orden = [], mapa = {};
+    filas.forEach(function(f){
+      var rut = f.pagador[0];
+      if (!mapa[rut]) { mapa[rut] = {pagador:f.pagador.slice(), eepc:f.eepc, n:0, pac:0, pag:0}; orden.push(rut); }
+      var a = mapa[rut]; a.n++; a.pac += aPesos(f.pactado[0]); a.pag += aPesos(f.pagado[0]);
+    });
+    return orden.map(function(rut){
+      var a = mapa[rut], d = a.pac - a.pag;
+      return {pagador:a.pagador, eepc:a.eepc, nAfiliados:String(a.n),
+        pactado:[fmtPesos(a.pac), fmtUF(a.pac)], pagado:[fmtPesos(a.pag), fmtUF(a.pag)], deuda:[fmtPesos(d), fmtUF(d)]};
+    });
+  }
+
   var REVISAR = [
     {
       titulo:"Duplicidades (2)",
-      desc:"La misma cotización impaga se repite para el mismo cotizante, pagador y medio de pago",
-      cols:["Cotización impaga","RUT cotizante","RUT pagador","Medio pago"],
+      desc:"La misma cotización impaga se repite para el mismo afiliado, pagador y medio de pago",
+      cols:["Cotización impaga","RUT afiliado","RUT pagador","Medio pago"],
       alinea:[0,0,0,1],
       filas:[
         ["01/08/26","10322567-K","45654323-1","PAT"],
@@ -937,7 +1006,7 @@
     {
       titulo:"Periodo fuera del mes en curso (1)",
       desc:"La cotización impaga no corresponde al periodo 01/08/26",
-      cols:["RUT cotizante","RUT pagador","Cotización impaga"],
+      cols:["RUT afiliado","RUT pagador","Cotización impaga"],
       alinea:[0,0,1],
       filas:[["14877203-9","76482915-8","01/07/26"]]
     },
@@ -946,7 +1015,7 @@
       desc:"Columnas de la tabla con un valor que no se puede usar",
       /* Acá cada fila falla por una razón distinta, así que el subtítulo no
          alcanza: el motivo va en la fila y todo queda alineado a la izquierda. */
-      cols:["RUT cotizante","Columna","Valor","Motivo"],
+      cols:["RUT afiliado","Columna","Valor","Motivo"],
       ancho:[135,115,105,163],
       alinea:[0,0,0,0],
       filas:[
@@ -958,11 +1027,11 @@
 
   /* ── Estado ──────────────────────────────────────────────────────────── */
 
-  var estado = {periodo:"", pagina:1, porPagina:10, filtros:{}, filtrados:0};
+  var estado = {periodo:"", vista:"afiliados", pagina:1, paginas:1, porPagina:10, filtros:{}, filtrados:0};
 
   /* Los criterios del modal, y la columna sobre la que filtra cada uno. */
   var FILTROS = [
-    {id:"f-rut-cot",    etiqueta:"RUT cotizante",  campo:"cotizante", parcial:true},
+    {id:"f-rut-cot",    etiqueta:"RUT afiliado",  campo:"cotizante", parcial:true},
     {id:"f-rut-pag",    etiqueta:"RUT pagador",    campo:"pagador",   parcial:true},
     {id:"f-tipo-deuda", etiqueta:"Tipo de deuda",  campo:"tipoDeuda"},
     {id:"f-tipo-cot",   etiqueta:"Tipo cotizante", campo:"tipoCot"},
@@ -1002,20 +1071,26 @@
 
   var SVG_AYUDA = '<svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.3" aria-hidden="true"><circle cx="8" cy="8" r="6.6"/><path d="M8 7.2v4" stroke-linecap="round"/><path d="M8 4.9h.01" stroke-linecap="round"/></svg>';
 
-  (function pintarCabeceraTabla(){
-    $("thead-fila").innerHTML = COLUMNAS.map(function(c){
+  function pintarCabecera(){
+    var cols = columnas();
+    $("thead-fila").innerHTML = cols.map(function(c){
       var ayuda = c.ayuda
         ? '<button class="ayuda" type="button" data-ayuda="' + c.ayuda + '" aria-label="Qué significa ' + c.t.replace("\n", " ") + '">' + SVG_AYUDA + '</button>'
         : "";
-      return '<th scope="col" style="width:' + c.w + 'px"><span class="cab"><span>' + c.t + '</span>' + ayuda + '</span></th>';
+      var ancho = c.w ? ' style="width:' + c.w + 'px"' : "";
+      return '<th scope="col"' + ancho + '><span class="cab"><span>' + c.t + '</span>' + ayuda + '</span></th>';
     }).join("");
-  })();
+    var todas = cols.every(function(c){ return c.w; });
+    $("tabla").style.width = todas ? cols.reduce(function(a, c){ return a + c.w; }, 0) + "px" : "100%";
+  }
+  pintarCabecera();
 
-  /* Hito 1 es una fila por cotizante y un solo periodo, así que los registros
-     de la tabla son exactamente el N° de cotizantes. El paginador sale de ahí
-     y del tamaño de página, nunca de un número aparte. */
+  /* Hito 1 es un solo periodo: en la vista por afiliado los registros son el
+     N° de afiliados y en la vista por pagador, el N° de pagadores. El paginador
+     sale de ahí y del tamaño de página, nunca de un número aparte. */
   function registrosDe(p){
-    return p && p.cotizantes ? parseInt(p.cotizantes.replace(/\./g, ""), 10) : 0;
+    var n = !p ? "" : (estado.vista === "pagadores" ? p.pagadores : p.cotizantes);
+    return n ? parseInt(n.replace(/\./g, ""), 10) : 0;
   }
 
   function paginasDe(registros, porPagina){
@@ -1031,10 +1106,12 @@
 
   /* Cada página rota el orden de las filas base. Nunca se reescribe un RUT
      ni un nombre por separado: el par tiene que seguir siendo cierto. */
+  function filasVista(filas){ return estado.vista === "pagadores" ? porPagador(filas) : filas; }
+
   function filasDePagina(periodo, pagina, porPagina){
-    var out = [];
+    var base = filasVista(FILAS_BASE), out = [];
     for (var i = 0; i < porPagina; i++) {
-      out.push(conImpaga(FILAS_BASE[(i + pagina - 1) % FILAS_BASE.length], periodo));
+      out.push(conImpaga(base[(i + pagina - 1) % base.length], periodo));
     }
     return out;
   }
@@ -1048,7 +1125,7 @@
   }
 
   function filasSkeleton(porPagina){
-    var celdas = COLUMNAS.map(function(){
+    var celdas = columnas().map(function(){
       return '<td><span class="skel" style="width:78%"></span><span class="skel" style="width:54%"></span></td>';
     }).join("");
     var out = "";
@@ -1196,9 +1273,12 @@
     if (hayFiltros()) {
       /* El universo cambia, así que el paginador se recalcula.
          Los totales del periodo se quedan como están. */
-      var coinciden = FILAS_BASE.filter(pasaFiltros);
+      /* Los filtros son de la deuda, no de la vista: en Pagadores quedan los
+         pagadores de los afiliados que cumplen el criterio. */
+      var universo = filasVista(FILAS_BASE);
+      var coinciden = filasVista(FILAS_BASE.filter(pasaFiltros));
       estado.filtrados = coinciden.length
-        ? Math.round(registrosDe(p) * coinciden.length / FILAS_BASE.length)
+        ? Math.round(registrosDe(p) * coinciden.length / universo.length)
         : 0;
       paginas = coinciden.length ? paginasDe(estado.filtrados, estado.porPagina) : 0;
       filas = coinciden.length ? filasDeSubconjunto(p, coinciden, estado.pagina, estado.porPagina) : [];
@@ -1208,6 +1288,7 @@
       paginas = paginasDe(registrosDe(p), estado.porPagina);
     }
 
+    estado.paginas = paginas;
     pintarChips();
 
     if (!filas.length) {
@@ -1219,7 +1300,8 @@
     mostrar("sin-resultados", false);
     mostrar("tabla-datos", true);
     $("tbody").innerHTML = filas.map(function(f){
-      return '<tr>' + COLUMNAS.map(function(c){ return celda(c, f[c.k]); }).join("") + '</tr>';
+      var cols = columnas();
+      return '<tr>' + cols.map(function(c){ return celda(c, f[c.k]); }).join("") + '</tr>';
     }).join("");
     marcarTruncados();
     $("conteo").textContent = estado.pagina + " de " + paginas;
@@ -1231,8 +1313,7 @@
     if (estado.pagina > 1) { estado.pagina--; pintarFilas(); }
   });
   $("pg-next").addEventListener("click", function(){
-    var p = periodoActual();
-    if (p && estado.pagina < paginasDe(registrosDe(p), estado.porPagina)) { estado.pagina++; pintarFilas(); }
+    if (estado.pagina < estado.paginas) { estado.pagina++; pintarFilas(); }
   });
   $("por-pagina").addEventListener("change", function(){
     estado.porPagina = parseInt(this.value, 10);
@@ -1260,6 +1341,7 @@
     $("bloque-texto").textContent = texto;
     mostrar("bloque", true);
     mostrar("totales", false);
+    mostrar("vistas", false);
     mostrar("tabla-card", false);
   }
 
@@ -1327,6 +1409,8 @@
     $("btn-exportar").disabled = false;
     pintarTotales(p);
     mostrar("totales", true);
+    mostrar("vistas", true);
+    pintarCabecera();
     estado.pagina = 1;
     pintarFilas();
     mostrar("tabla-card", true);
@@ -1341,6 +1425,8 @@
      El periodo en curso sí genera la deuda, y usa el loader. */
   function esqueleto(p){
     mostrar("bloque", false);
+    mostrar("vistas", true);
+    pintarCabecera();
     mostrar("filtros-aplicados", false);
     mostrar("sin-resultados", false);
     mostrar("tabla-datos", true);
@@ -1386,6 +1472,9 @@
     var btn = this;
     estado.periodo = valor;
     estado.pagina = 1;
+    estado.vista = "afiliados";
+    pintarVistas();
+    cerrarMenuExportar();
     var p = periodoActual();
     var cerrado = p.caso === "cerrado";
     /* El skeleton es para lo que ya sabemos que existe: un periodo que
@@ -1427,13 +1516,80 @@
     relojSnackbar = window.setTimeout(function(){ mostrar("snackbar", false); }, 4500);
   }
 
+  function abrirMenuExportar(){
+    mostrar("menu-exportar", true);
+    $("btn-exportar").setAttribute("aria-expanded", "true");
+    $("op-vista").focus();
+  }
+  function cerrarMenuExportar(devolverFoco){
+    if ($("menu-exportar").hidden) return;
+    mostrar("menu-exportar", false);
+    $("btn-exportar").setAttribute("aria-expanded", "false");
+    if (devolverFoco) $("btn-exportar").focus();
+  }
+
   $("btn-exportar").addEventListener("click", function(){
-    var btn = this;
+    if ($("menu-exportar").hidden) abrirMenuExportar(); else cerrarMenuExportar();
+  });
+
+  /* Cualquiera de los dos archivos sigue el mismo camino: carga y aviso. */
+  function descargar(){
+    var btn = $("btn-exportar");
+    cerrarMenuExportar();
+    btn.focus();
     cargando(btn, true);
     window.setTimeout(function(){
       cargando(btn, false);
       snackbar("La deuda se descargó correctamente");
     }, 1800);
+  }
+  $("op-vista").addEventListener("click", descargar);
+  $("op-consolidada").addEventListener("click", descargar);
+
+  $("menu-exportar").addEventListener("keydown", function(e){
+    var ops = [$("op-vista"), $("op-consolidada")];
+    var i = ops.indexOf(document.activeElement);
+    if (e.key === "ArrowDown" || e.key === "ArrowUp") {
+      e.preventDefault();
+      ops[(i + (e.key === "ArrowDown" ? 1 : ops.length - 1)) % ops.length].focus();
+    } else if (e.key === "Tab") {
+      cerrarMenuExportar();
+    }
+  });
+
+  /* ── Vistas del detalle ──────────────────────────────────────────────── */
+
+  function pintarVistas(){
+    Array.prototype.forEach.call(document.querySelectorAll(".vista"), function(t){
+      var activa = t.getAttribute("data-vista") === estado.vista;
+      t.setAttribute("aria-selected", String(activa));
+      t.tabIndex = activa ? 0 : -1;
+      if (activa) $("tabla-card").setAttribute("aria-labelledby", t.id);
+    });
+    $("op-vista").textContent = estado.vista === "pagadores" ? "Deuda por pagador" : "Deuda por afiliado";
+  }
+
+  function cambiarVista(vista){
+    if (vista === estado.vista) return;
+    estado.vista = vista;
+    estado.pagina = 1;
+    cerrarMenuExportar();
+    esconderPista();
+    pintarVistas();
+    pintarCabecera();
+    pintarFilas();
+  }
+
+  $("vistas").addEventListener("click", function(e){
+    var t = e.target.closest(".vista");
+    if (t) cambiarVista(t.getAttribute("data-vista"));
+  });
+  $("vistas").addEventListener("keydown", function(e){
+    if (e.key !== "ArrowRight" && e.key !== "ArrowLeft") return;
+    e.preventDefault();
+    var otra = estado.vista === "afiliados" ? "pagadores" : "afiliados";
+    cambiarVista(otra);
+    $("tab-" + otra).focus();
   });
 
   /* ── Modal de filtros ────────────────────────────────────────────────── */
@@ -1536,6 +1692,7 @@
 
   document.addEventListener("click", function(e){
     if (!e.target.closest(".combo")) cerrarCombos(null);
+    if (!e.target.closest(".exportar")) cerrarMenuExportar();
   });
 
   ["f-rut-cot", "f-rut-pag"].forEach(function(id){
@@ -1661,6 +1818,7 @@
 
   document.addEventListener("keydown", function(e){
     if (e.key !== "Escape") return;
+    if (!$("menu-exportar").hidden) { cerrarMenuExportar(true); return; }
     if (!$("scrim-filtros").hidden) {
       if (document.querySelector('.combo[data-abierto="1"]')) cerrarCombos(null);
       else cerrarFiltros();
