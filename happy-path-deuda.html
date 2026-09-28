@@ -182,7 +182,7 @@
   .totales-destacado .monto{font-size:28px; line-height:34px; font-weight:700; font-variant-numeric:tabular-nums}
   .totales-destacado .uf{font-size:16px; line-height:24px; font-variant-numeric:tabular-nums}
   .totales-metricas{
-    flex:1 1 auto; display:flex; gap:16px; padding:24px 64px; min-width:0;
+    flex:1 1 auto; display:flex; gap:16px; padding:24px 40px; min-width:0;
   }
   .metrica{flex:1 1 0; min-width:0; display:flex; flex-direction:column; gap:4px}
   .metrica .rotulo{font-size:14px; line-height:24px; color:var(--gris)}
@@ -615,23 +615,25 @@
             </div>
             <div class="totales-metricas">
               <div class="metrica">
-                <div class="rotulo">Total pactado</div>
-                <div class="valor" id="m-pactado">$0</div>
-                <div class="uf" id="m-pactado-uf">0,000 UF</div>
-              </div>
-              <div class="metrica">
-                <div class="rotulo">Total pagado</div>
-                <div class="valor" id="m-pagado">$0</div>
-                <div class="uf" id="m-pagado-uf">0,000 UF</div>
-              </div>
-              <div class="metrica">
-                <div class="rotulo">Afiliados con deuda</div>
+                <div class="rotulo">Afiliados deudores</div>
                 <div class="valor" id="m-cotizantes">0</div>
               </div>
               <div class="metrica">
-                <div class="rotulo">Pagadores</div>
+                <div class="rotulo">Deuda EEPC</div>
+                <div class="valor" id="m-eepc">$0</div>
+                <div class="uf" id="m-eepc-uf">0,000 UF</div>
+              </div>
+              <div class="metrica">
+                <div class="rotulo">Total pagadores</div>
                 <div class="valor" id="m-pagadores">0</div>
-                <div class="uf" id="m-pagadores-det">0 EEPC · 0 NN</div>
+              </div>
+              <div class="metrica">
+                <div class="rotulo">Pagadores EEPC</div>
+                <div class="valor" id="m-pag-eepc">0</div>
+              </div>
+              <div class="metrica">
+                <div class="rotulo">Pagadores NN</div>
+                <div class="valor" id="m-pag-nn">0</div>
               </div>
             </div>
           </section>
@@ -897,7 +899,7 @@
     deuda:"$643.759.800", deudaUf:"16.725,812 UF",
     pactado:"$842.190.400", pactadoUf:"21.881,327 UF",
     pagado:"$198.430.600", pagadoUf:"5.155,515 UF",
-    cotizantes:"9.480", pagadores:"5.910", pagadoresDet:"4.728 EEPC · 1.182 NN",
+    cotizantes:"9.480", pagadores:"5.910", deudaEepc:"$690.431.300", deudaEepcUf:"17.938,406 UF", pagadoresEepc:"4.728", pagadoresNn:"1.182",
     impaga:"01/08/26", semilla:29
   };
 
@@ -928,7 +930,7 @@
       deuda:"$311.190.400", deudaUf:"8.085,178 UF",
       pactado:"$842.190.400", pactadoUf:"21.881,327 UF",
       pagado:"$531.000.000", pagadoUf:"13.796,150 UF",
-      cotizantes:"7.980", pagadores:"4.950", pagadoresDet:"3.960 EEPC · 990 NN",
+      cotizantes:"7.980", pagadores:"4.950", deudaEepc:"$335.941.000", deudaEepcUf:"8.728,234 UF", pagadoresEepc:"3.960", pagadoresNn:"990",
       impaga:"01/08/26", semilla:37
     }),
     "2026-09": enCurso("Septiembre 2026 (abierto)"),
@@ -940,21 +942,21 @@
       deuda:"$518.450.250", deudaUf:"13.470,089 UF",
       pactado:"$842.190.400", pactadoUf:"21.881,327 UF",
       pagado:"$323.740.150", pagadoUf:"8.411,238 UF",
-      cotizantes:"7.120", pagadores:"4.380", pagadoresDet:"3.504 EEPC · 876 NN",
+      cotizantes:"7.120", pagadores:"4.380", deudaEepc:"$559.680.750", deudaEepcUf:"14.541,317 UF", pagadoresEepc:"3.504", pagadoresNn:"876",
       impaga:"01/07/26", semilla:11
     }),
     "2026-07": cerrado("Julio 2026", "05/08/26", {
       deuda:"$491.203.700", deudaUf:"12.762,184 UF",
       pactado:"$838.940.100", pactadoUf:"21.796,880 UF",
       pagado:"$347.736.400", pagadoUf:"9.034,696 UF",
-      cotizantes:"6.985", pagadores:"4.302", pagadoresDet:"3.442 EEPC · 860 NN",
+      cotizantes:"6.985", pagadores:"4.302", deudaEepc:"$530.303.700", deudaEepcUf:"13.778,059 UF", pagadoresEepc:"3.442", pagadoresNn:"860",
       impaga:"01/06/26", semilla:53
     }),
     "2026-06": cerrado("Junio 2026", "05/07/26", {
       deuda:"$462.870.900", deudaUf:"12.026,057 UF",
       pactado:"$831.615.300", pactadoUf:"21.606,571 UF",
       pagado:"$368.744.400", pagadoUf:"9.580,514 UF",
-      cotizantes:"6.840", pagadores:"4.215", pagadoresDet:"3.372 EEPC · 843 NN",
+      cotizantes:"6.840", pagadores:"4.215", deudaEepc:"$499.720.900", deudaEepcUf:"12.983,473 UF", pagadoresEepc:"3.372", pagadoresNn:"843",
       impaga:"01/05/26", semilla:71
     })
   };
@@ -1447,13 +1449,12 @@
     $("tot-rotulo").textContent = p.rotulo;
     $("tot-monto").textContent = p.deuda;
     $("tot-uf").textContent = p.deudaUf;
-    $("m-pactado").textContent = p.pactado;
-    $("m-pactado-uf").textContent = p.pactadoUf;
-    $("m-pagado").textContent = p.pagado;
-    $("m-pagado-uf").textContent = p.pagadoUf;
     $("m-cotizantes").textContent = p.cotizantes;
+    $("m-eepc").textContent = p.deudaEepc;
+    $("m-eepc-uf").textContent = p.deudaEepcUf;
     $("m-pagadores").textContent = p.pagadores;
-    $("m-pagadores-det").textContent = p.pagadoresDet;
+    $("m-pag-eepc").textContent = p.pagadoresEepc;
+    $("m-pag-nn").textContent = p.pagadoresNn;
   }
 
   function render(animado){
@@ -1501,7 +1502,7 @@
     mostrar("sin-resultados", false);
     mostrar("tabla-datos", true);
     $("tot-rotulo").textContent = p.rotulo;
-    ["tot-monto","tot-uf","m-pactado","m-pactado-uf","m-pagado","m-pagado-uf","m-cotizantes","m-pagadores","m-pagadores-det"]
+    ["tot-monto","tot-uf","m-cotizantes","m-eepc","m-eepc-uf","m-pagadores","m-pag-eepc","m-pag-nn"]
       .forEach(function(id, i){
         $(id).innerHTML = '<span class="skel" style="width:' + (i === 0 ? 86 : 70) + '%"></span>';
       });
