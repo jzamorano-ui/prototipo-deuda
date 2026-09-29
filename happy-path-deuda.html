@@ -253,6 +253,8 @@
   /* ── Modales ───────────────────────────────────────────────────────────── */
   .scrim{position:fixed; inset:0; background:rgba(81,96,106,.75); z-index:60; display:flex; align-items:center; justify-content:center; padding:24px}
   .modal{width:800px; max-width:100%; max-height:100%; overflow-y:auto; background:var(--blanco); border-radius:8px; box-shadow:0 12px 32px rgba(32,52,66,.24)}
+  /* Filtros: sin recorte, para que las listas se abran por fuera del modal (en pantallas bajas vuelve el scroll). */
+  @media (min-height:680px){ #scrim-filtros .modal{max-height:none; overflow:visible} }
   .modal-filtros{width:900px}
   .modal-head{position:relative; display:flex; flex-direction:column; gap:4px; padding:28px 64px 24px; border-bottom:1px solid var(--linea); text-align:center}
   .modal-head h2{margin:0; font-size:18px; line-height:22px; font-weight:700; color:var(--tinta)}
@@ -315,6 +317,7 @@
   .combo-periodo{width:322px; max-width:100%}
   .combo-periodo[data-lleno="1"] .combo-trigger{background:var(--blanco); border-color:var(--campo-borde); color:var(--tinta)}
   .combo-panel{position:absolute; top:calc(100% + 6px); left:0; right:0; z-index:5; margin:0; padding:0; list-style:none; max-height:228px; overflow-y:auto; background:var(--blanco); border:1px solid var(--lista-borde); border-radius:8px; box-shadow:0 6px 16px rgba(32,52,66,.12)}
+  .combo[data-arriba="1"] .combo-panel{top:auto; bottom:calc(100% + 6px)}
   .combo-panel:focus{outline:none}
   .combo-panel li{display:flex; align-items:center; min-height:48px; padding:12px 16px; font-size:16px; line-height:24px; color:var(--tinta-2); cursor:pointer; border-bottom:1px solid var(--lista-divisor)}
   .combo-panel li:last-child{border-bottom:0}
@@ -890,13 +893,13 @@
   /* ── Filtros: se filtra por lo que muestra cada tabla ────────────────── */
   var CAMPOS = {
     afiliados:[
-      /* Filas: RUT y marca · montos · pago y medio · tipo cotizante (el hueco queda al final). */
+      /* Filas: RUT y marca · montos · pago y tipo cotizante. Medio de pago no es dato
+         de la tabla de afiliados: solo se filtra en Pagadores. */
       {id:"rutAfi", tipo:"texto", label:"RUT afiliado", ph:"Ingresa RUT"},
       {id:"marca", tipo:"combo", label:"Marca", ops:[["Sin marca","Sin marca"],["Especial","Especial"],["Reputacional","Reputacional"]]},
       {id:"desde", tipo:"monto", label:"Deuda desde", ph:"Ingresa monto"},
       {id:"hasta", tipo:"monto", label:"Deuda hasta", ph:"Ingresa monto"},
       {id:"pago", tipo:"combo", label:"Pago", ops:[["sin","Sin pago"],["parcial","Pago parcial"]]},
-      {id:"medio", tipo:"combo", label:"Medio de pago", ops:[["CAJA","CAJA"],["PAC","PAC"],["PAT","PAT"],["PREVIRED","PREVIRED"]]},
       {id:"tipoCot", tipo:"combo", label:"Tipo cotizante", ops:[["D","D - Dependiente","Dependiente"],["I","I - Independiente","Independiente"],["P","P - Pensionado","Pensionado"],["V","V - Voluntario","Voluntario"]]}
     ],
     pagadores:[
@@ -921,8 +924,6 @@
       if (k === "marca") return f.marca === v;
       if (k === "tipoCot") return f.tipoCot.indexOf(v) !== -1;
       if (k === "pago") return v === "sin" ? f._pagado === 0 : f._pagado > 0 && f._pagado < f._total;
-      /* El afiliado entra si alguno de sus pagos del periodo usó ese medio. */
-      if (k === "medio") return lineasDe(f._a.id).some(function(l){ return pagosDe(l, periodoActual()).some(function(x){ return x.medio === v; }); });
       if (k === "desde") return f._deuda >= numero(v);
       if (k === "hasta") return f._deuda <= numero(v);
       return true;
@@ -1558,7 +1559,11 @@
     if (trigger) {
       var combo = trigger.parentNode, abierto = combo.getAttribute("data-abierto") === "1";
       cerrarCombos(combo); combo.setAttribute("data-abierto", abierto ? "0" : "1");
-      combo.querySelector(".combo-panel").hidden = abierto; trigger.setAttribute("aria-expanded", String(!abierto));
+      var panel = combo.querySelector(".combo-panel");
+      panel.hidden = abierto; trigger.setAttribute("aria-expanded", String(!abierto));
+      /* Se abre hacia arriba solo si abajo no cabe y arriba sí. */
+      combo.removeAttribute("data-arriba");
+      if (!abierto) { var r = trigger.getBoundingClientRect(), h = panel.offsetHeight + 12; if (r.bottom + h > window.innerHeight && r.top - h > 0) combo.setAttribute("data-arriba", "1"); }
       return;
     }
     var opcion = e.target.closest('.combo-panel [role="option"]');
