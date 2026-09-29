@@ -98,6 +98,17 @@
 
   /* ── Dashboard ─────────────────────────────────────────────────────────── */
   .tarjeta{background:var(--blanco); border-radius:8px; box-shadow:var(--sombra); padding:24px}
+  /* Selector de vista: Deuda del mes (activa) y Deuda histórica (próximamente). */
+  .vista-deuda{display:flex; gap:16px; flex-wrap:wrap}
+  .vista-op{display:flex; align-items:center; gap:16px; width:343px; max-width:100%; min-height:88px; padding:16px; border-radius:8px; background:var(--blanco); border:1px solid transparent}
+  .vista-op[aria-checked="true"]{border-color:#00837a}
+  .vista-op .vista-txt{flex:1 1 auto; display:flex; flex-direction:column; gap:8px; color:#1a1b29}
+  .vista-op b{font-size:16px; line-height:24px}
+  .vista-op span.vista-sub{font-size:14px; line-height:24px}
+  .vista-op[aria-disabled="true"] .vista-txt{color:var(--gris-2)}
+  .vista-radio{flex:0 0 auto; width:20px; height:20px; margin:2px; border-radius:999px; border:2px solid var(--verde); display:grid; place-content:center}
+  .vista-radio::after{content:""; width:10px; height:10px; border-radius:999px; background:var(--verde)}
+  .vista-pronto{flex:0 0 auto; padding:3px 11px; border-radius:999px; background:#f8f9f9; border:1px solid var(--gris-4); color:#0f202b; font-size:14px; line-height:24px; font-weight:700; white-space:nowrap}
   .dash{display:flex; flex-direction:column; gap:16px}
   .dash-titulo{display:flex; flex-direction:column; gap:8px}
   .dash-titulo h2{margin:0; font-size:18px; line-height:22px; font-weight:700; color:var(--tinta)}
@@ -416,6 +427,17 @@
             <span class="icono" id="aviso-icono"></span>
             <span class="texto" id="aviso-texto"></span>
             <button class="accion" type="button" id="aviso-accion" hidden>Ver detalle</button>
+          </div>
+
+          <div class="vista-deuda" role="radiogroup" aria-label="Tipo de deuda">
+            <div class="vista-op" role="radio" aria-checked="true" tabindex="0">
+              <span class="vista-txt"><b>Deuda del mes</b><span class="vista-sub">Flujo</span></span>
+              <span class="vista-radio" aria-hidden="true"></span>
+            </div>
+            <div class="vista-op" role="radio" aria-checked="false" aria-disabled="true">
+              <span class="vista-txt"><b>Deuda histórica</b><span class="vista-sub">Stock</span></span>
+              <span class="vista-pronto">Próximamente</span>
+            </div>
           </div>
 
           <section class="tarjeta dash" aria-labelledby="dash-titulo">
