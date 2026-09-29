@@ -107,9 +107,6 @@
   .dash-izq{display:flex; align-items:center; gap:16px; flex-wrap:wrap}
   .periodo-txt{margin:0; font-size:16px; line-height:24px; color:var(--tinta)}
   .periodo-txt b{font-weight:700; color:var(--lila-txt)}
-  .estado{display:inline-flex; align-items:center; padding:7px 11px; border-radius:8px; border:1px solid; font-size:14px; line-height:16px; font-weight:700; color:var(--tinta); white-space:nowrap}
-  .estado[data-tono="cerrado"]{background:var(--lila-bg); border-color:var(--lila-borde)}
-  .estado[data-tono="curso"]{background:var(--ambar-bg); border-color:var(--ambar-borde)}
   .dash-der{display:flex; align-items:center; gap:16px}
 
   /* ── Botones ───────────────────────────────────────────────────────────── */
@@ -430,7 +427,6 @@
             <div class="dash-fila">
               <div class="dash-izq">
                 <p class="periodo-txt" id="periodo-txt">No se ha seleccionado periodo</p>
-                <span class="estado" id="estado-chip" hidden></span>
               </div>
               <div class="dash-der">
                 <div class="combo combo-periodo" data-combo="periodo">
@@ -668,7 +664,6 @@
 
   function periodo(o){
     o.etiqueta = o.etiqueta || o.opcion;
-    o.chip = o.caso === "curso" ? {tono:"curso", texto:"Periodo en curso"} : {tono:"cerrado", texto:"Periodo cerrado"};
     if (!o.aviso) o.aviso = o.caso === "curso"
       ? {tono:"curso", texto:"Deuda preliminar. El periodo de recaudación aún no cierra y los montos pueden cambiar."}
       : {tono:"cerrado", texto:"Deuda final. El periodo de recaudación cerró el " + o.cierre + " a las 11:24 hrs."};
@@ -683,7 +678,7 @@
     "2026-09": periodo({opcion:"Septiembre 2026 (en curso)", etiqueta:"Septiembre 2026", caso:"curso", carga:"loader", datos:"sep", rem:"Agosto 2026", rec:"09/2026", tot:T_SEP}),
     "2026-09-cerrado": periodo({opcion:"Septiembre 2026 (cerrado)", etiqueta:"Septiembre 2026", caso:"cerrado", cierre:"05/10/2026", carga:"loader", datos:"sep", rem:"Agosto 2026", rec:"09/2026", tot:T_SEP}),
     "2026-09-inc": periodo({opcion:"Septiembre 2026 (inconsistencias)", etiqueta:"Septiembre 2026", caso:"curso", carga:"loader", datos:"sep", rem:"Agosto 2026", rec:"09/2026", tot:T_SEP,
-      aviso:{tono:"revisar", texto:"Se encontraron 5 registros con inconsistencias. Selecciona ver detalle para conocerlos.", accion:true}}),
+      aviso:{tono:"revisar", texto:"Deuda preliminar. Se encontraron 5 registros con inconsistencias, selecciona ver detalle para conocerlos.", accion:true}}),
     "2026-08": periodo({opcion:"Agosto 2026", caso:"cerrado", cierre:"05/09/2026", carga:"skeleton", datos:"ago", rem:"Julio 2026", rec:"08/2026", tot:T_AGO}),
     "2026-07": periodo({opcion:"Julio 2026", caso:"cerrado", cierre:"05/08/2026", carga:"skeleton", datos:"ago", rem:"Junio 2026", rec:"07/2026", tot:T_JUL}),
     "2026-06": periodo({opcion:"Junio 2026", caso:"cerrado", cierre:"05/07/2026", carga:"skeleton", datos:"ago", rem:"Mayo 2026", rec:"06/2026", tot:T_JUN})
@@ -1086,11 +1081,9 @@
     $("aviso-accion").hidden = !a.accion;
     mostrar("aviso", true);
   }
-  function pintarPeriodo(p, conChip){
-    if (!p) { $("periodo-txt").textContent = "No se ha seleccionado periodo"; mostrar("estado-chip", false); return; }
+  function pintarPeriodo(p){
+    if (!p) { $("periodo-txt").textContent = "No se ha seleccionado periodo"; return; }
     $("periodo-txt").innerHTML = 'Periodo seleccionado <b>' + p.etiqueta + '</b>';
-    if (conChip) { $("estado-chip").textContent = p.chip.texto; $("estado-chip").setAttribute("data-tono", p.chip.tono); mostrar("estado-chip", true); animar($("estado-chip")); }
-    else mostrar("estado-chip", false);
   }
   function pintarTotales(p){
     var t = p.tot;
@@ -1102,7 +1095,7 @@
   function render(animado){
     var p = periodoActual();
     if (!p) { pintarAviso(null); pintarPeriodo(null); bloque("Aún no hay un periodo seleccionado.", "Elige un periodo para ver la deuda del mes."); return; }
-    pintarAviso(p.aviso); pintarPeriodo(p, true);
+    pintarAviso(p.aviso); pintarPeriodo(p);
     mostrar("bloque", false);
     $("btn-exportar").disabled = false;
     pintarTotales(p); mostrar("totales", true); mostrar("vistas", true);
@@ -1150,7 +1143,7 @@
     estado.filtros = {afiliados:{}, pagadores:{}};
     pintarVistas(); cerrarMenuExportar(); cerrarMenuFila();
     var p = periodoActual(), consulta = p.carga === "skeleton";
-    cargando(btn, true); pintarAviso(null); pintarPeriodo(p, false);
+    cargando(btn, true); pintarAviso(null); pintarPeriodo(p);
     if (consulta) esqueleto();
     else bloque("Generando deuda del periodo", "Puede tardar unos minutos; mantén esta pantalla abierta.", "rueda");
     window.setTimeout(function(){ cargando(btn, false); render(true); }, consulta ? 1200 : 1800);
