@@ -275,6 +275,7 @@
   .ctx dd{margin:0; font-size:16px; line-height:24px; font-weight:700; color:var(--tinta)}
   .tabla-m{border:1px solid var(--linea); border-radius:8px; overflow:hidden}
   .tabla-m table{width:100%; table-layout:auto}
+  .tabla-m table.fija{table-layout:fixed}
   .tabla-m thead th{height:72px; padding:12px 16px; font-weight:400; color:var(--modal-txt)}
   .tabla-m tbody td{height:80px; padding:12px 16px; color:var(--modal-txt)}
   .tabla-m td .sub{color:var(--modal-sub)}
@@ -749,16 +750,16 @@
      Cada pago guarda el día; mes y año salen del periodo de recaudación. */
   var LINEAS = [
     {id:"l1", a:"a1", pag:["45654323-1","Clínica Alemana de Santiago S.A."], tipo:"EEPC", nAfil:850, pactado:100000,
-      pagos:{sep:[["10","PAT",60000]], ago:[["10","PAT",80000]]}},
+      pagos:{sep:[["10","SV",60000]], ago:[["10","SV",80000]]}},
     {id:"l2", a:"a2", pag:["56234544-0","Colegio Alemán de Santiago SpA"], tipo:"EEPC", nAfil:312, pactado:40000,
-      pagos:{sep:[["10","PAT",25000],["18","CAJA",5000]], ago:[["12","PAT",25000],["20","CAJA",5000]]}},
+      pagos:{sep:[["10","SV",25000],["18","CAJA",5000]], ago:[["12","SV",25000],["20","CAJA",5000]]}},
     {id:"l3", a:"a2", pag:["76100200-K","AFP Modelo S.A."], tipo:"EEPC", nAfil:1204, pactado:20000,
       pagos:{sep:[["15","CAJA",20000]], ago:[["14","CAJA",20000]]}},
     {id:"l4", a:"a5", pag:["45654323-1","Clínica Alemana de Santiago S.A."], tipo:"EEPC", nAfil:850, pactado:35000, pagos:{sep:[], ago:[]}},
     {id:"l5", a:"a5", pag:["76123456-7","Inmobiliaria Los Andes SpA"], tipo:"NN", nAfil:1, pactado:null,
       pagos:{sep:[["08","PREVIRED",15000]], ago:[["07","PREVIRED",15000]]}},
     {id:"l6", a:"a4", pag:["78456765-2","Servicios Diagnósticos Clínica Alemana Limitada"], tipo:"EEPC", nAfil:97, pactado:40000, pagos:{sep:[], ago:[]}},
-    {id:"l7", a:"a3", pag:["17948884-2","Javiera Núñez Bravo"], tipo:"EEPC", nAfil:1, pactado:403373, pagos:{sep:[], ago:[["11","PAC",203373]]}},
+    {id:"l7", a:"a3", pag:["17948884-2","Javiera Núñez Bravo"], tipo:"EEPC", nAfil:1, pactado:403373, pagos:{sep:[], ago:[["11","SV",203373]]}},
     {id:"l8", a:"a6", pag:["21335447-6","Sergio Bustamante Rojas"], tipo:"EEPC", nAfil:1, pactado:25000, pagos:{sep:[], ago:[]}}
   ];
   /* Relleno de la muestra: 60 afiliados más, para que «Mostrar por página» con
@@ -778,7 +779,7 @@
       [rutDe("78123450"), "Laboratorio Andino S.A.", 119]
     ];
     var AFP = ["76100200-K", "AFP Modelo S.A.", 1204], NN = [rutDe("76987650"), "Asesorías Pacífico SpA"];
-    var TIPOS = ["D","D","I","D","P","D","V","DP","D","D"], MEDIOS = ["PREVIRED","PAT","PAC","CAJA"];
+    var TIPOS = ["D","D","I","D","P","D","V","DP","D","D"], MEDIOS = ["PREVIRED","SV","CAJA"];
     /* Parte pagada de cada línea: siempre menos que el pactado, así todos deben. */
     var PARTE = [0, .5, .8, 0, .6, .9, .3, 0, .75, .4];
     function dia(n){ return (n < 10 ? "0" : "") + n; }
@@ -799,7 +800,7 @@
         var l = {id:"x" + i + "-" + j, a:a.id, pag:pt[0], tipo:"EEPC", nAfil:pt[1], pactado:pt[2], extra:true, pagos:{}};
         [["sep", PARTE[(i + j) % 10], 5 + i % 15], ["ago", PARTE[(i + j + 3) % 10], 6 + i % 14]].forEach(function(m){
           var n = Math.round(pt[2] * m[1]); resto[m[0]] -= n;
-          l.pagos[m[0]] = n ? [[dia(m[2]), MEDIOS[(i + j) % 4], n]] : [];
+          l.pagos[m[0]] = n ? [[dia(m[2]), MEDIOS[(i + j) % MEDIOS.length], n]] : [];
         });
         LINEAS.push(l);
       });
@@ -909,7 +910,7 @@
       {id:"desde", tipo:"monto", label:"Deuda desde", ph:"Ingresa monto"},
       {id:"hasta", tipo:"monto", label:"Deuda hasta", ph:"Ingresa monto"},
       {id:"pago", tipo:"combo", label:"Pago", ops:[["sin","Sin pago"],["parcial","Pago parcial"]]},
-      {id:"medio", tipo:"combo", label:"Medio de pago", ops:[["CAJA","CAJA"],["PAC","PAC"],["PAT","PAT"],["PREVIRED","PREVIRED"]]},
+      {id:"medio", tipo:"combo", label:"Medio de pago", ops:[["CAJA","CAJA"],["PREVIRED","PREVIRED"],["SV","SV"],["Seguro de cesantía","Seguro de cesantía"],["TGR","TGR"]]},
       {id:"tipoPag", tipo:"combo", label:"Tipo de pagador", ops:[["EEPC","EEPC"],["NN","NN"]]}
     ]
   };
@@ -1327,8 +1328,10 @@
       '<button class="pg" type="button" data-pagina="' + (pagina - 1) + '" aria-label="Página anterior"' + (pagina <= 1 ? ' disabled' : '') + '><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"/></svg></button>' +
       '<button class="pg" type="button" data-pagina="' + (pagina + 1) + '" aria-label="Página siguiente"' + (pagina >= paginas ? ' disabled' : '') + '><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg></button></div>';
   }
-  function tablaModal(cabeceras, filas, pagina, paginas){
-    return '<div class="tabla-m"><table><thead><tr>' + cabeceras.map(function(c){ return '<th scope="col">' + c + '</th>'; }).join("") + '</tr></thead><tbody>' +
+  /* anchos (opcional): los de las columnas en Figma, para que no dependan del contenido. */
+  function tablaModal(cabeceras, filas, pagina, paginas, anchos){
+    var cols = anchos ? '<colgroup>' + anchos.map(function(w){ return '<col style="width:' + w + 'px">'; }).join("") + '</colgroup>' : "";
+    return '<div class="tabla-m"><table' + (anchos ? ' class="fija"' : '') + '>' + cols + '<thead><tr>' + cabeceras.map(function(c){ return '<th scope="col">' + c + '</th>'; }).join("") + '</tr></thead><tbody>' +
       filas.map(function(f){ return '<tr>' + f.map(function(v){
         return Array.isArray(v) ? '<td><span class="val">' + v[0] + '</span><span class="sub">' + v[1] + '</span></td>' : '<td>' + v + '</td>';
       }).join("") + '</tr>'; }).join("") +
@@ -1356,7 +1359,7 @@
     });
     abrirConsulta("Pagos asociados", "Revisa los pagos recibidos para esta cotización.",
       [{crece:true, datos:[["Afiliado", a.nombre + " · " + a.rut]]}, {datos:[["Total a pagar", pesos(totalAPagar(a))]]}, {datos:[["Periodo de remuneración", p.rem]]}],
-      filas.length ? tablaModal(["RUT y nombre pagador","Periodo de recaudación","Tipo de pagador","Origen","Total pagado"], filas)
+      filas.length ? tablaModal(["RUT y nombre pagador","Periodo de recaudación","Tipo de pagador","Medio de pago","Total pagado"], filas, 1, 1, [266, 150, 96, 100, 122])
         : vacioModal("Sin pagos", "Este afiliado no registra pagos para esta cotización en el periodo."));
   }
   function abrirEepc(aid){
@@ -1610,7 +1613,7 @@
   function inc_azar(){ inc_semilla = (inc_semilla * 9301 + 49297) % 233280; return inc_semilla / 233280; }
   function inc_rutAfil(){ return inc_rut(9000000 + Math.floor(inc_azar() * 17000000)); }
   function inc_rutPag(){ return inc_rut(76000000 + Math.floor(inc_azar() * 999999)); }
-  var inc_MEDIOS = ["PAT", "PAC", "CAJA", "PREVIRED", "KLAP"];
+  var inc_MEDIOS = ["SV", "TGR", "CAJA", "PREVIRED", "Seguro de cesantía"];
   var inc_CALIDAD = [
     ["Fecha de pago", "31/02/2026", "Esa fecha no existe"],
     ["Pactado", "vacío", "El dato es obligatorio"],
