@@ -115,9 +115,10 @@
   .dash-titulo p{margin:0; font-size:16px; line-height:24px; color:var(--tinta-2)}
   .divisor{height:1px; background:var(--linea)}
   .dash-fila{display:flex; align-items:center; justify-content:space-between; gap:16px; flex-wrap:wrap}
-  .dash-izq{display:flex; align-items:center; gap:16px; flex-wrap:wrap}
+  .dash-izq{display:flex; align-items:center; gap:16px; flex-wrap:wrap; flex:1 1 0; min-width:0}
   .periodo-txt{margin:0; font-size:16px; line-height:24px; color:var(--tinta)}
   .periodo-txt b{font-weight:700; color:var(--lila-txt)}
+  .periodo-txt .linea{display:block; white-space:nowrap}
   .dash-der{display:flex; align-items:center; gap:16px}
 
   /* ── Botones ───────────────────────────────────────────────────────────── */
@@ -319,25 +320,28 @@
   .combo-periodo .combo-panel{border-radius:0; border-color:var(--linea-input)}
   .combo-periodo .combo-panel li{min-height:57px}
 
-  /* ── Panel de inconsistencias ──────────────────────────────────────────── */
-  .panel-scrim{position:fixed; inset:0; background:rgba(81,96,106,.75); z-index:55}
-  .panel{position:fixed; top:0; right:0; bottom:0; width:620px; max-width:100%; background:var(--blanco); box-shadow:-8px 0 24px rgba(32,52,66,.18); z-index:56; display:flex; flex-direction:column; overflow-y:auto}
-  .panel-head{position:relative; display:flex; flex-direction:column; gap:14px; padding:24px 24px 20px; border-bottom:1px solid var(--linea)}
-  .panel-head h2{margin:0; font-size:24px; line-height:28px; font-weight:700; color:var(--tinta)}
-  .panel-head p{margin:0; font-size:16px; line-height:24px; color:var(--gris-2)}
-  .panel-cuerpo{display:flex; flex-direction:column; gap:12px; padding:22px 24px}
-  .grupo{border:1px solid var(--linea); border-radius:8px; overflow:hidden}
-  .grupo-head{display:flex; align-items:flex-start; gap:16px; width:100%; padding:16px; text-align:left; background:var(--blanco)}
-  .grupo-head:hover{background:#fbfcfc}
-  .grupo-head .txt{flex:1 1 auto}
-  .grupo-head .txt b{display:block; font-size:16px; line-height:24px; font-weight:700; color:var(--tinta)}
-  .grupo-head .txt span{display:block; font-size:14px; line-height:24px; color:var(--gris-2)}
-  .grupo-head .chev{flex:0 0 auto; display:flex; color:var(--tinta-2); transition:transform .15s ease}
-  .grupo[data-abierto="1"] .grupo-head .chev{transform:rotate(180deg)}
-  .grupo table{width:100%; table-layout:auto}
-  .grupo thead th{height:44px; padding:8px 16px; color:var(--gris-2)}
-  .grupo tbody td{height:50px; padding:8px 16px}
-  .grupo tbody tr:last-child td{border-bottom:0}
+  /* ── Modal de inconsistencias: modal de consulta con pestañas por tipo ─── */
+  .modal-inc{width:960px}
+  /* Información destacada, como en Excedentes y Excesos: chips verde claro con «Etiqueta: valor» */
+  .inc-destacada{display:flex; flex-wrap:wrap; gap:12px; margin:0; padding:0; list-style:none}
+  .inc-destacada li{padding:8px 16px; border-radius:4px; background:var(--verde-claro); font-size:16px; line-height:16px; color:var(--tinta-2)}
+  .inc-destacada b{font-weight:700}
+  .modal-inc .inc-tabs .vista{display:inline-flex; align-items:center; gap:8px}
+  .modal-inc .inc-tabs .vista .n{min-width:24px; padding:2px 8px; border-radius:999px; background:var(--th); color:var(--gris); font-size:13px; line-height:18px; font-weight:700; font-variant-numeric:tabular-nums; text-align:center}
+  .modal-inc .inc-tabs .vista[aria-selected="true"] .n{background:var(--verde-claro); color:var(--verde)}
+  .modal-inc .inc-cuerpo{overflow-y:auto}
+  .modal-inc .inc-cuerpo thead th{position:sticky; top:0; z-index:1; background:var(--th); box-shadow:inset 0 -1px 0 var(--linea)}
+  .modal-inc .inc-top{display:flex; align-items:flex-end; justify-content:space-between; gap:24px; flex-wrap:wrap}
+  .modal-inc .inc-top .btn{height:44px; padding:0 18px}
+  .modal-inc .inc-top .btn svg{margin-right:8px}
+  .modal-inc .inc-tabs{gap:0}
+  .modal-inc .inc-tabs .vista{padding:0 16px}
+  .modal-inc .inc-regla{margin:-8px 0 0; font-size:14px; line-height:22px; color:var(--gris)}
+  .modal-inc .tabla-m thead th{height:56px; padding:8px 16px}
+  .modal-inc .tabla-m tbody td{height:64px; padding:8px 16px; white-space:nowrap}
+  .modal-inc .tabla-m td.corta{max-width:170px; overflow:hidden; text-overflow:ellipsis}
+  .modal-inc .tabla-m td.motivo{white-space:normal; min-width:180px}
+  .modal-inc .tabla-m td.motivo span{display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden}
 
   /* ── Aviso de éxito: entra desde abajo y se retira a los 5 segundos ────── */
   .snackbar{position:fixed; right:32px; bottom:32px; display:flex; align-items:center; gap:16px; max-width:calc(100vw - 64px); padding:8px 12px; min-height:48px; border-radius:8px; background:var(--verde-bg); border:1px solid var(--verde-borde); font-size:14px; font-weight:700; color:var(--tinta); z-index:70; box-shadow:0 8px 20px rgba(32,52,66,.16)}
@@ -372,6 +376,7 @@
     .tot-head, .tot-det{padding:20px 24px}
     .tot-met{flex-wrap:wrap}
     .modal-grid{grid-template-columns:1fr}
+    .campo-vacio{display:none}
     .modal-head, .modal-cuerpo, .modal-grid, .modal-pie{padding-left:16px; padding-right:16px}
     .ctx{flex-wrap:wrap; gap:16px}
   }
@@ -418,7 +423,7 @@
           <div class="migas">
             <span>Inicio</span>
             <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 18 6-6-6-6"/></svg>
-            <b>Cobranza</b>
+            <b>Deuda</b>
           </div>
         </div>
 
@@ -443,12 +448,12 @@
           <section class="tarjeta dash" aria-labelledby="dash-titulo">
             <div class="dash-titulo">
               <h2 id="dash-titulo">Dashboard de la deuda</h2>
-              <p>Selecciona un periodo para ver la información correspondiente</p>
+              <p>Selecciona un periodo de recaudación para ver la deuda del periodo de remuneración</p>
             </div>
             <div class="divisor"></div>
             <div class="dash-fila">
               <div class="dash-izq">
-                <p class="periodo-txt" id="periodo-txt">No se ha seleccionado periodo</p>
+                <p class="periodo-txt" id="periodo-txt">No se ha seleccionado periodo de recaudación</p>
               </div>
               <div class="dash-der">
                 <div class="combo combo-periodo" data-combo="periodo">
@@ -608,19 +613,26 @@
   </div>
 </div>
 
-<!-- Panel de consulta: registros con inconsistencias (solo ✕) -->
-<div class="panel-scrim" id="panel-scrim" hidden></div>
-<aside class="panel" id="panel" role="dialog" aria-modal="true" aria-labelledby="panel-titulo" hidden>
-  <div class="panel-head">
-    <h2 id="panel-titulo">Registros con inconsistencias</h2>
-    <p id="panel-sub"></p>
-    <button class="modal-cerrar" type="button" id="panel-x" aria-label="Cerrar">
-      <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" aria-hidden="true"><path d="M2 2l12 12M14 2 2 14"/></svg>
-    </button>
+<!-- Modal de consulta: registros con inconsistencias, con pestañas por tipo (solo ✕; Esc y clic fuera cierran) -->
+<div class="scrim" id="scrim-inc" hidden>
+  <div class="modal modal-inc" role="dialog" aria-modal="true" aria-labelledby="i-titulo">
+    <div class="modal-head">
+      <h2 id="i-titulo">Registros con inconsistencias</h2>
+      <p id="i-glosa"></p>
+      <button class="modal-cerrar" type="button" id="i-x" aria-label="Cerrar">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" aria-hidden="true"><path d="M2 2l12 12M14 2 2 14"/></svg>
+      </button>
+    </div>
+    <div class="modal-cuerpo">
+      <div class="inc-top">
+        <ul class="inc-destacada" id="i-ctx" aria-label="Resumen"></ul>
+      </div>
+      <div class="vistas inc-tabs" id="i-tabs" role="tablist" aria-label="Tipo de inconsistencia"></div>
+      <p class="inc-regla" id="i-regla"></p>
+      <div id="i-contenido" role="tabpanel"></div>
+    </div>
   </div>
-  <div class="panel-cuerpo" id="panel-cuerpo"></div>
-</aside>
-
+</div>
 <div class="snackbar" id="snackbar" role="status" hidden>
   <span class="icono"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="m8.5 12.2 2.4 2.4 4.6-4.9"/></svg></span>
   <span id="snackbar-texto"></span>
@@ -648,7 +660,7 @@
 
   /* ── Menú lateral ────────────────────────────────────────────────────── */
   var MENU = [
-    {t:"Recaudación", i:"carpeta"}, {t:"Cobranza", i:"carpeta", activo:true}, {t:"Gestión de Beneficios", i:"carpeta"},
+    {t:"Recaudación", i:"carpeta"}, {t:"Deuda", i:"carpeta", activo:true}, {t:"Gestión de Beneficios", i:"carpeta"},
     {t:"Distribución", i:"carpeta"}, {t:"Centralización", i:"carpeta"}, {t:"Excedentes y Excesos", i:"carpeta"},
     {t:"Devolución", i:"carpeta"}, {t:"Consultas por RUT", i:"persona"}, {t:"Configuraciones", i:"rueda"}
   ];
@@ -684,6 +696,11 @@
   var T_JUL = totales(838940100, 347736400, 6985, 530303700, 3442, 860);
   var T_JUN = totales(831615300, 368744400, 6840, 499720900, 3372, 843);
 
+  function avisoInconsistencias(n){
+    return {tono:"revisar", accion:true, texto: n === 1
+      ? "Deuda preliminar. Se encontró 1 registro con inconsistencias, selecciona ver detalle para conocerlo."
+      : "Deuda preliminar. Se encontraron " + miles(n) + " registros con inconsistencias, selecciona ver detalle para conocerlos."};
+  }
   function periodo(o){
     o.etiqueta = o.etiqueta || o.opcion;
     if (!o.aviso) o.aviso = o.caso === "curso"
@@ -699,8 +716,7 @@
   var PERIODOS = {
     "2026-09": periodo({opcion:"Septiembre 2026 (en curso)", etiqueta:"Septiembre 2026", caso:"curso", carga:"loader", datos:"sep", rem:"Agosto 2026", rec:"09/2026", tot:T_SEP}),
     "2026-09-cerrado": periodo({opcion:"Septiembre 2026 (cerrado)", etiqueta:"Septiembre 2026", caso:"cerrado", cierre:"05/10/2026", carga:"loader", datos:"sep", rem:"Agosto 2026", rec:"09/2026", tot:T_SEP}),
-    "2026-09-inc": periodo({opcion:"Septiembre 2026 (inconsistencias)", etiqueta:"Septiembre 2026", caso:"curso", carga:"loader", datos:"sep", rem:"Agosto 2026", rec:"09/2026", tot:T_SEP,
-      aviso:{tono:"revisar", texto:"Deuda preliminar. Se encontraron 5 registros con inconsistencias, selecciona ver detalle para conocerlos.", accion:true}}),
+    "2026-09-inc": periodo({opcion:"Septiembre 2026 (inconsistencias)", etiqueta:"Septiembre 2026", caso:"curso", carga:"loader", datos:"sep", rem:"Agosto 2026", rec:"09/2026", tot:T_SEP, inc:"cien"}),
     "2026-08": periodo({opcion:"Agosto 2026", caso:"cerrado", cierre:"05/09/2026", carga:"skeleton", datos:"ago", rem:"Julio 2026", rec:"08/2026", tot:T_AGO}),
     "2026-07": periodo({opcion:"Julio 2026", caso:"cerrado", cierre:"05/08/2026", carga:"skeleton", datos:"ago", rem:"Junio 2026", rec:"07/2026", tot:T_JUL}),
     "2026-06": periodo({opcion:"Junio 2026", caso:"cerrado", cierre:"05/07/2026", carga:"skeleton", datos:"ago", rem:"Mayo 2026", rec:"06/2026", tot:T_JUN})
@@ -873,6 +889,9 @@
       {id:"marca", tipo:"combo", label:"Marca", ops:[["Sin marca","Sin marca"],["Especial","Especial"],["Reputacional","Reputacional"]]},
       {id:"tipoCot", tipo:"combo", label:"Tipo cotizante", ops:[["D","D - Dependiente","Dependiente"],["I","I - Independiente","Independiente"],["P","P - Pensionado","Pensionado"],["V","V - Voluntario","Voluntario"]]},
       {id:"pago", tipo:"combo", label:"Pago", ops:[["sin","Sin pago"],["parcial","Pago parcial"]]},
+      {id:"medio", tipo:"combo", label:"Medio de pago", ops:[["CAJA","CAJA"],["PAC","PAC"],["PAT","PAT"],["PREVIRED","PREVIRED"]]},
+      /* Hueco para que Deuda desde y Deuda hasta queden en la misma fila. */
+      {tipo:"vacio"},
       {id:"desde", tipo:"monto", label:"Deuda desde", ph:"Ingresa monto"},
       {id:"hasta", tipo:"monto", label:"Deuda hasta", ph:"Ingresa monto"}
     ],
@@ -896,6 +915,8 @@
       if (k === "marca") return f.marca === v;
       if (k === "tipoCot") return f.tipoCot.indexOf(v) !== -1;
       if (k === "pago") return v === "sin" ? f._pagado === 0 : f._pagado > 0 && f._pagado < f._total;
+      /* El afiliado entra si alguno de sus pagos del periodo usó ese medio. */
+      if (k === "medio") return lineasDe(f._a.id).some(function(l){ return pagosDe(l, periodoActual()).some(function(x){ return x.medio === v; }); });
       if (k === "desde") return f._deuda >= numero(v);
       if (k === "hasta") return f._deuda <= numero(v);
       return true;
@@ -1104,8 +1125,8 @@
     mostrar("aviso", true);
   }
   function pintarPeriodo(p){
-    if (!p) { $("periodo-txt").textContent = "No se ha seleccionado periodo"; return; }
-    $("periodo-txt").innerHTML = 'Periodo seleccionado <b>' + p.etiqueta + '</b>';
+    if (!p) { $("periodo-txt").textContent = "No se ha seleccionado periodo de recaudación"; return; }
+    $("periodo-txt").innerHTML = '<span class="linea">Periodo de recaudación <b>' + p.etiqueta + '</b></span><span class="linea">Remuneraciones de <b>' + p.rem + '</b></span>';
   }
   function pintarTotales(p){
     var t = p.tot;
@@ -1234,8 +1255,8 @@
     filaMenu = {tipo:partes[0], id:partes[1]};
     var ops;
     if (filaMenu.tipo === "a") {
-      var m = marcaDe(afiliado(filaMenu.id));
-      ops = [["pagos","Ver pagos asociados"],["eepc","Ver EEPC relacionadas"],[m ? "verMarca" : "marca", m ? "Ver marca" : "Agregar marca"]];
+      /* La marca se ve en su columna, pero no se agrega ni se edita desde aquí. */
+      ops = [["pagos","Ver pagos asociados"],["eepc","Ver EEPC relacionadas"]];
     } else {
       /* Un pagador NN no figura en ningún contrato: no tiene cotizaciones ni deuda que detallar. */
       ops = linea(filaMenu.id).tipo === "NN" ? [["detallePago","Detalle de pago"]]
@@ -1453,6 +1474,7 @@
 
   /* ── Modal de filtros: con acciones (sin ✕; Esc cancela) ─────────────── */
   function campoHtml(c, valor){
+    if (c.tipo === "vacio") return '<div class="campo-vacio" aria-hidden="true"></div>';
     if (c.tipo === "combo") {
       var o = c.ops.filter(function(x){ return x[0] === valor; })[0];
       return '<div class="campo"><span class="label" id="lb-' + c.id + '">' + c.label + '</span>' +
@@ -1558,42 +1580,107 @@
     if (!$("scrim-consulta").hidden) { cerrarConsulta(); return; }
     if (!$("scrim-marca").hidden) { cerrarMarca(); return; }
     if (!$("scrim-filtros").hidden) { cerrarFiltros(); return; }
-    if (!$("panel").hidden) cerrarPanel();
   });
 
   /* ── Panel de registros con inconsistencias (consulta: solo ✕) ─────── */
-  var REVISAR = [
-    {titulo:"Duplicidades (2)", desc:"El mismo periodo de remuneración se repite para el mismo afiliado, pagador y medio de pago",
-      cols:["Periodo de remuneración","RUT afiliado","RUT pagador","Medio de pago"],
-      filas:[["Agosto 2026","10322567-K","45654323-1","PAT"],["Agosto 2026","10322567-K","45654323-1","PAT"]]},
-    {titulo:"Periodo fuera del mes en curso (1)", desc:"El periodo de remuneración no corresponde al del mes en curso (Agosto 2026)",
-      cols:["RUT afiliado","RUT pagador","Periodo de remuneración"], filas:[["14877203-9","76482915-8","Julio 2026"]]},
-    {titulo:"Calidad del dato (2)", desc:"Columnas con un valor que no se puede usar",
-      cols:["RUT afiliado","Columna","Valor","Motivo"],
-      filas:[["17948884-2","Fecha de pago","31/02/2026","Esa fecha no existe"],["9455312-K","Pactado","vacío","El dato es obligatorio"]]}
+  /* Registros con inconsistencias de muestra: las reglas son las de la
+     validación; los valores son ejemplos. */
+  function inc_dv(n){ var s = 0, m = 2; String(n).split("").reverse().forEach(function(d){ s += Number(d) * m; m = m === 7 ? 2 : m + 1; }); var r = 11 - (s % 11); return r === 11 ? "0" : r === 10 ? "K" : String(r); }
+  function inc_rut(n){ return n + "-" + inc_dv(n); }
+  var inc_semilla = 7;
+  function inc_azar(){ inc_semilla = (inc_semilla * 9301 + 49297) % 233280; return inc_semilla / 233280; }
+  function inc_rutAfil(){ return inc_rut(9000000 + Math.floor(inc_azar() * 17000000)); }
+  function inc_rutPag(){ return inc_rut(76000000 + Math.floor(inc_azar() * 999999)); }
+  var inc_MEDIOS = ["PAT", "PAC", "CAJA", "PREVIRED", "KLAP"];
+  var inc_CALIDAD = [
+    ["Fecha de pago", "31/02/2026", "Esa fecha no existe"],
+    ["Pactado", "vacío", "El dato es obligatorio"],
+    ["RUT pagador", "7648291-3", "El dígito verificador no corresponde al RUT"],
+    ["Medio de pago", "TRANSFERENCIA ELECTRÓNICA INTERBANCARIA DIFERIDA", "El valor no está en la lista de medios de pago de la plataforma"],
+    ["Monto pagado", "-$15.000", "El monto no puede ser negativo"]
   ];
-  $("panel-cuerpo").innerHTML = REVISAR.map(function(g, i){
-    return '<div class="grupo" data-abierto="' + (i === 0 ? 1 : 0) + '"><button class="grupo-head" type="button" aria-expanded="' + (i === 0) + '">' +
-      '<span class="txt"><b>' + g.titulo + '</b><span>' + g.desc + '</span></span><span class="chev">' + SVG_FLECHA + '</span></button>' +
-      '<div class="grupo-tabla"' + (i === 0 ? "" : " hidden") + '><table><thead><tr>' + g.cols.map(function(c){ return '<th scope="col">' + c + '</th>'; }).join("") +
-      '</tr></thead><tbody>' + g.filas.map(function(f){ return '<tr>' + f.map(function(v){ return '<td>' + v + '</td>'; }).join("") + '</tr>'; }).join("") + '</tbody></table></div></div>';
-  }).join("");
-  $("panel-cuerpo").addEventListener("click", function(e){
-    var h = e.target.closest(".grupo-head"); if (!h) return;
-    var g = h.parentNode, abierto = g.getAttribute("data-abierto") === "1";
-    g.setAttribute("data-abierto", abierto ? "0" : "1"); h.setAttribute("aria-expanded", String(!abierto)); g.querySelector(".grupo-tabla").hidden = abierto;
-  });
-  function abrirPanel(){
-    Array.prototype.forEach.call(document.querySelectorAll(".grupo"), function(g, i){
-      g.setAttribute("data-abierto", i === 0 ? "1" : "0"); g.querySelector(".grupo-head").setAttribute("aria-expanded", String(i === 0)); g.querySelector(".grupo-tabla").hidden = i !== 0;
-    });
-    $("panel-sub").textContent = periodoActual().etiqueta + " · 5 registros · calculado el 23/09/2026 a las 09:12 hrs.";
-    mostrar("panel-scrim", true); mostrar("panel", true); $("panel-x").focus();
+  function inc_duplicados(pares){ var f = []; for (var i = 0; i < pares; i++) { var a = inc_rutAfil(), g = inc_rutPag(), m = inc_MEDIOS[i % inc_MEDIOS.length]; f.push([a, g, m], [a, g, m]); } return f; }
+  function inc_fuera(n){ var meses = ["Julio 2026", "Junio 2026", "Mayo 2026"], f = []; for (var i = 0; i < n; i++) f.push([inc_rutAfil(), inc_rutPag(), meses[i % 3]]); return f; }
+  function inc_calidad(n){ var f = []; for (var i = 0; i < n; i++) { var c = inc_CALIDAD[i % inc_CALIDAD.length]; f.push([inc_rutAfil(), c[0], c[1], c[2]]); } return f; }
+  var inc_COLS = {
+    dup: ["RUT afiliado", "RUT pagador", "Medio de pago"],
+    fuera: ["RUT afiliado", "RUT pagador", "Periodo de remuneración"],
+    cal: ["RUT afiliado", "Columna", "Valor", "Motivo"]
+  };
+  function inc_grupos(nDup, nFuera, nCal){
+    var g = [];
+    if (nDup) g.push({titulo:"Duplicidades", desc:"El mismo periodo de remuneración se repite para el mismo afiliado, pagador y medio de pago", cols:inc_COLS.dup, filas:inc_duplicados(nDup / 2)});
+    if (nFuera) g.push({titulo:"Fuera de mes", desc:"El periodo de remuneración no corresponde al del mes en curso (Agosto 2026)", cols:inc_COLS.fuera, filas:inc_fuera(nFuera)});
+    if (nCal) g.push({titulo:"Calidad del dato", desc:"Columnas con un valor que no se puede usar", cols:inc_COLS.cal, filas:inc_calidad(nCal)});
+    return g;
   }
-  function cerrarPanel(){ mostrar("panel-scrim", false); mostrar("panel", false); $("aviso-accion").focus(); }
-  $("aviso-accion").addEventListener("click", abrirPanel);
-  $("panel-x").addEventListener("click", cerrarPanel);
-  $("panel-scrim").addEventListener("click", cerrarPanel);
+  var INCONSISTENCIAS = {
+    /* 24 + 18 + 70 = 112 inconsistencias en 100 registros: 12 registros tienen dos. */
+    cien:  {registros:100, grupos:inc_grupos(24, 18, 70)}
+  };
+  Object.keys(PERIODOS).forEach(function(k){ var q = PERIODOS[k]; if (q.inc) q.aviso = avisoInconsistencias(INCONSISTENCIAS[q.inc].registros); });
+  var inc_panelDatos = null;
+  function inc_nInconsistencias(d){ return d.grupos.reduce(function(t, g){ return t + g.filas.length; }, 0); }
+  function inc_celda(col, v){
+    if (col === "Valor") return '<td class="corta" title="' + v + '">' + v + '</td>';
+    if (col === "Motivo") return '<td class="motivo"><span title="' + v + '">' + v + '</span></td>';
+    return '<td>' + v + '</td>';
+  }
+  var inc_tab = 0, inc_pag = 1, inc_porPag = 5;
+  function inc_paginador(pag, total){
+    var ops = [5, 10, 25].map(function(n){ return '<option' + (n === inc_porPag ? ' selected' : '') + '>' + n + '</option>'; }).join("");
+    return paginadorModal(pag, total).replace('<select aria-label="Filas por página"><option>5</option></select>', '<select aria-label="Filas por página" id="i-porpag">' + ops + '</select>');
+  }
+  function inc_pintarTab(){
+    var d = inc_panelDatos, g = d.grupos[inc_tab], total = Math.max(1, Math.ceil(g.filas.length / inc_porPag));
+    Array.prototype.forEach.call(document.querySelectorAll("#i-tabs .vista"), function(t, i){
+      t.setAttribute("aria-selected", String(i === inc_tab)); t.tabIndex = i === inc_tab ? 0 : -1;
+    });
+    $("i-regla").textContent = g.desc;
+    var filas = g.filas.slice((inc_pag - 1) * inc_porPag, inc_pag * inc_porPag);
+    $("i-contenido").innerHTML = '<div class="tabla-m"><div class="inc-cuerpo"><table><thead><tr>' + g.cols.map(function(c){ return '<th scope="col">' + c + '</th>'; }).join("") + '</tr></thead><tbody>' +
+      filas.map(function(f){ return '<tr>' + f.map(function(v, k){ return inc_celda(g.cols[k], v); }).join("") + '</tr>'; }).join("") + '</tbody></table></div>' +
+      inc_paginador(inc_pag, total) + '</div>';
+    /* Todas las filas miden lo mismo (el motivo ocupa hasta dos líneas), así que
+       basta medir la cabecera y una fila. */
+    var cab = document.querySelector("#i-contenido thead").getBoundingClientRect().height,
+        fila = document.querySelector("#i-contenido tbody tr").getBoundingClientRect().height;
+    /* Alto definido por el contenido: la página más llena entre todas las
+       pestañas, con tope de 5 filas. No cambia al pasar de pestaña ni de página;
+       con 10 o 25 por página, la tabla hace scroll por dentro con la cabecera fija. */
+    var filasAlto = Math.min(5, Math.max.apply(null, d.grupos.map(function(x){ return x.filas.length; })));
+    document.querySelector("#i-contenido .inc-cuerpo").style.height = (Math.ceil(cab + fila * filasAlto) + 1) + "px";
+  }
+  function abrirModalInc(){
+    var p = periodoActual(), d = INCONSISTENCIAS[p.inc], r = d.registros, n = inc_nInconsistencias(d);
+    inc_panelDatos = d; inc_tab = 0; inc_pag = 1; inc_porPag = 5;
+    var datos = [["Recaudación", p.etiqueta], ["Remuneración", p.rem], ["Registros", miles(r)]].concat(n !== r ? [["Inconsistencias", miles(n)]] : []);
+    $("i-ctx").innerHTML = datos.map(function(x){ return '<li>' + x[0] + ': <b>' + x[1] + '</b></li>'; }).join("");
+    $("i-glosa").textContent = "Registros de la deuda que no pasaron la validación del 23/09/2026 a las 09:12 hrs.";
+    /* Con un solo tipo no hay pestañas: la regla y la tabla bastan. */
+    $("i-tabs").hidden = d.grupos.length < 2;
+    $("i-tabs").innerHTML = d.grupos.map(function(g, i){
+      return '<button class="vista" type="button" role="tab" data-i="' + i + '" aria-controls="i-contenido">' + g.titulo + '<span class="n">' + miles(g.filas.length) + '</span></button>';
+    }).join("");
+    /* Se muestra antes de pintar: el alto de la tabla se mide con el modal visible. */
+    mostrar("scrim-inc", true);
+    inc_pintarTab();
+    $("i-x").focus();
+  }
+  function cerrarModalInc(){ mostrar("scrim-inc", false); $("aviso-accion").focus(); }
+  $("i-x").addEventListener("click", cerrarModalInc);
+  $("scrim-inc").addEventListener("mousedown", function(e){ if (e.target === this) cerrarModalInc(); });
+  document.addEventListener("keydown", function(e){ if (e.key === "Escape" && !$("scrim-inc").hidden) cerrarModalInc(); });
+  $("i-tabs").addEventListener("click", function(e){ var t = e.target.closest(".vista"); if (!t) return; inc_tab = Number(t.getAttribute("data-i")); inc_pag = 1; inc_pintarTab(); });
+  $("i-tabs").addEventListener("keydown", function(e){
+    if (e.key !== "ArrowRight" && e.key !== "ArrowLeft") return;
+    e.preventDefault(); var n = inc_panelDatos.grupos.length;
+    inc_tab = (inc_tab + (e.key === "ArrowRight" ? 1 : n - 1)) % n; inc_pag = 1; inc_pintarTab();
+    document.querySelector('#i-tabs .vista[data-i="' + inc_tab + '"]').focus();
+  });
+  $("i-contenido").addEventListener("click", function(e){ var b = e.target.closest(".pg"); if (!b || b.disabled) return; inc_pag = Number(b.getAttribute("data-pagina")); inc_pintarTab(); });
+  $("i-contenido").addEventListener("change", function(e){ if (e.target.id !== "i-porpag") return; inc_porPag = Number(e.target.value); inc_pag = 1; inc_pintarTab(); });
+  $("aviso-accion").addEventListener("click", abrirModalInc);
 
   pintarVistas();
   render();
