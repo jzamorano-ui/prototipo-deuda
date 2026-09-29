@@ -29,7 +29,7 @@ Desde ahí:
   - Pagadores: Detalle de pago y Detalle de cotizaciones. Un pagador NN solo
     tiene Detalle de pago: no figura en el contrato, así que no tiene
     cotizaciones ni deuda que detallar.
-- **Marca especial.** Se agrega, se ve y se edita. El detalle guarda el
+- **Marca (Especial o Reputacional).** Se agrega, se ve y se edita. El detalle guarda el
   historial de observaciones con nombre, fecha y hora; la tabla muestra la
   más reciente.
 

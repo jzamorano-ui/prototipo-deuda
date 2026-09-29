@@ -1391,7 +1391,7 @@
     } else {
       var editar = modo === "editar", tipo = editar ? m.tipo : "", obs = editar ? m.registros[m.registros.length - 1].obs : "";
       marcaAbierta.inicial = tipo + "|" + obs;
-      $("m-titulo").textContent = editar ? "Editar marca especial" : "Agregar marca especial";
+      $("m-titulo").textContent = editar ? "Editar marca" : "Agregar marca";
       cuerpo += '<fieldset class="grupo-radio"><legend>Tipo de marca</legend><div class="radios">' +
         ["Especial","Reputacional"].map(function(t){ return '<label class="radio"><input type="radio" name="m-tipo" value="' + t + '"' + (t === tipo ? " checked" : "") + '>' + t + '</label>'; }).join("") +
         '</div></fieldset>' +
@@ -1432,7 +1432,7 @@
       m.registros.push({tipo:v.tipo, obs:v.obs, accion: editar ? "Editada" : "Registrada", fecha:t.fecha, hora:t.hora});
       marcas[a.rut] = m;
       cerrarMarca(); pintarFilas();
-      aviso(editar ? "La marca se actualizó correctamente" : "La marca especial se guardó correctamente");
+      aviso(editar ? "La marca se actualizó correctamente" : "La marca se guardó correctamente");
     }
   });
 
