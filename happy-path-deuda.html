@@ -60,9 +60,9 @@
 
   /* ── Menú lateral ──────────────────────────────────────────────────────── */
   .nav{width:250px; flex:0 0 250px; background:var(--blanco); padding:24px 0; overflow-y:auto; transition:width .18s ease, flex-basis .18s ease}
-  .nav-titulo{display:flex; align-items:center; justify-content:space-between; padding:5px 16px 5px 28px; font-size:14px; font-weight:700; color:var(--gris-2)}
+  .nav-titulo{display:flex; align-items:center; justify-content:space-between; padding:4px 18px 4px 16px; font-size:14px; font-weight:700; color:var(--gris-2)}
   .nav-titulo button{display:flex; color:var(--tinta-2); padding:4px; border-radius:4px}
-  .nav-lista{display:flex; flex-direction:column; margin-top:16px}
+  .nav-lista{display:flex; flex-direction:column; margin-top:0}
   .nav-item{
     display:flex; align-items:center; gap:36px; width:100%; min-height:56px;
     padding:16px 16px 16px 28px; font-size:16px; font-weight:700; line-height:24px;
@@ -79,7 +79,7 @@
 
   /* ── Página ────────────────────────────────────────────────────────────── */
   .main{flex:1 1 auto; min-width:0; overflow-y:auto; background:var(--fondo)}
-  .pagina{display:flex; flex-direction:column; gap:16px; padding:24px 32px 32px}
+  .pagina{display:flex; flex-direction:column; gap:16px; padding:27px 32px 32px}
   .cabecera{display:flex; flex-direction:column; gap:16px}
   .cabecera h1{margin:0; font-size:24px; line-height:28px; font-weight:700; color:var(--tinta)}
   .migas{display:flex; align-items:center; gap:12px; font-size:14px; line-height:24px; color:var(--tinta-2)}
@@ -87,7 +87,7 @@
   .contenido{display:flex; flex-direction:column; gap:24px}
 
   /* ── Aviso del periodo ─────────────────────────────────────────────────── */
-  .aviso{display:flex; align-items:center; gap:10px; min-height:48px; padding:8px 12px; border-radius:8px; border:1px solid; font-size:14px; line-height:24px; color:var(--tinta)}
+  .aviso{display:flex; align-items:center; gap:8px; min-height:48px; padding:8px 11px; border-radius:8px; border:1px solid; font-size:14px; line-height:24px; color:var(--tinta)}
   .aviso .icono{flex:0 0 auto; display:flex}
   .aviso .texto{flex:1 1 auto}
   .aviso .accion{font-size:14px; line-height:24px; font-weight:700; color:var(--tinta); text-decoration:underline; padding:4px}
@@ -100,7 +100,7 @@
   .tarjeta{background:var(--blanco); border-radius:8px; box-shadow:var(--sombra); padding:24px}
   /* Selector de vista: Deuda del mes (activa) y Deuda histórica (próximamente). */
   .vista-deuda{display:flex; gap:16px; flex-wrap:wrap}
-  .vista-op{display:flex; align-items:center; gap:16px; width:343px; max-width:100%; min-height:88px; padding:16px; border-radius:8px; background:var(--blanco); border:1px solid transparent}
+  .vista-op{display:flex; align-items:center; gap:16px; width:343px; max-width:100%; min-height:88px; padding:15px 16px; border-radius:8px; background:var(--blanco); border:1px solid transparent}
   .vista-op[aria-checked="true"]{border-color:#00837a}
   .vista-op .vista-txt{flex:1 1 auto; display:flex; flex-direction:column; gap:8px; color:#1a1b29}
   .vista-op b{font-size:16px; line-height:24px}
@@ -108,7 +108,8 @@
   .vista-op[aria-disabled="true"] .vista-txt{color:var(--gris-2)}
   .vista-radio{flex:0 0 auto; width:20px; height:20px; margin:2px; border-radius:999px; border:2px solid var(--verde); display:grid; place-content:center}
   .vista-radio::after{content:""; width:10px; height:10px; border-radius:999px; background:var(--verde)}
-  .vista-pronto{flex:0 0 auto; padding:3px 11px; border-radius:999px; background:#f8f9f9; border:1px solid var(--gris-4); color:#0f202b; font-size:14px; line-height:24px; font-weight:700; white-space:nowrap}
+  /* Tag de Recaudación (Tag DS Escencial Library) con los colores del botón deshabilitado de la plataforma */
+  .vista-pronto{flex:0 0 auto; padding:3px 7px; border-radius:8px; background:var(--blanco); border:1px solid var(--gris-2); color:var(--gris-2); font-size:12px; line-height:16px; font-weight:400; white-space:nowrap}
   .dash{display:flex; flex-direction:column; gap:16px}
   .dash-titulo{display:flex; flex-direction:column; gap:8px}
   .dash-titulo h2{margin:0; font-size:18px; line-height:22px; font-weight:700; color:var(--tinta)}
@@ -132,6 +133,7 @@
   .btn-sec{border:1px solid var(--verde); color:var(--verde); background:var(--blanco)}
   .btn-sec:hover:not(:disabled){background:var(--verde-claro)}
   .btn:disabled{background:var(--linea); border-color:transparent; color:var(--gris-4); box-shadow:none; cursor:not-allowed}
+  .btn-sec:disabled{background:transparent; border-color:var(--gris-2); color:var(--gris-2)}
   .btn-link{display:inline-flex; align-items:center; justify-content:center; height:50px; padding:0 22px; border-radius:8px; font-size:16px; line-height:20px; font-weight:700; color:var(--verde)}
   .btn-link:hover{background:var(--verde-claro)}
   .rueda{width:22px; height:22px; border-radius:999px; border:2.5px solid rgba(255,255,255,.35); border-top-color:#fff; animation:girar .8s linear infinite}
@@ -171,10 +173,10 @@
   .menu{margin:0; padding:0; list-style:none; background:var(--blanco); border:1px solid var(--linea-input); box-shadow:var(--sombra-menu)}
   .menu li + li{border-top:1px solid var(--linea)}
   .menu button{display:block; width:100%; padding:16px; text-align:left; font-size:16px; line-height:24px; color:var(--tinta); white-space:nowrap}
-  .menu button:hover, .menu button:focus-visible{background:var(--lista-hover); outline:none}
-  .menu-exportar{position:absolute; top:calc(100% + 4px); right:0; z-index:6; min-width:100%}
+  /* Hover de opciones en verde, como el menú ⋮ de la plataforma */
+  .menu button:hover, .menu button:focus-visible{background:var(--menu-hover); color:var(--menu-hover-txt); outline:none}
+  .menu-exportar{position:absolute; top:calc(100% + 4px); right:0; z-index:6; min-width:192px}
   .menu-fila{position:fixed; z-index:50; width:232px}
-  .menu-fila button:hover, .menu-fila button:focus-visible{background:var(--menu-hover); color:var(--menu-hover-txt)}
 
   .filtros-aplicados{display:flex; flex-direction:column; gap:12px; padding:16px 24px; border-bottom:1px solid var(--linea)}
   .filtros-aplicados .etiqueta{font-size:14px; line-height:24px; color:var(--gris)}
@@ -259,7 +261,8 @@
   .modal-cerrar:hover{background:var(--fondo)}
   .modal-cuerpo{display:flex; flex-direction:column; gap:24px; padding:28px 32px}
   .modal-pie{display:flex; align-items:center; justify-content:space-between; gap:16px; padding:20px 32px 24px; border-top:1px solid var(--linea)}
-  .modal-grid{display:grid; grid-template-columns:1fr 1fr; gap:20px 32px; padding:28px 32px}
+  .modal-grid{display:grid; grid-template-columns:1fr 1fr; gap:20px 24px; padding:28px 32px}
+  #scrim-filtros .modal-head{padding:28px 32px 24px}
 
   /* Contexto de los modales */
   .ctx{display:flex; gap:32px}
@@ -305,7 +308,7 @@
   /* Desplegable */
   .combo{position:relative}
   .combo-trigger{display:flex; align-items:center; justify-content:space-between; gap:12px; height:50px; width:100%; padding:13px 16px; border:1px solid var(--campo-borde); border-radius:8px; background:var(--blanco); font-size:16px; line-height:24px; color:var(--gris-3); text-align:left}
-  .combo-trigger .flecha{flex:0 0 auto; display:flex; color:var(--tinta-2); transition:transform .15s ease}
+  .combo-trigger .flecha{flex:0 0 auto; display:flex; color:var(--gris-3); transition:transform .15s ease}
   .combo-valor{min-width:0; overflow:hidden; text-overflow:ellipsis; white-space:nowrap}
   .combo[data-abierto="1"] .combo-trigger .flecha{transform:rotate(180deg)}
   .combo[data-lleno="1"] .combo-trigger{background:var(--campo-lleno-bg); border-color:var(--campo-lleno-borde); color:var(--tinta)}
@@ -315,8 +318,8 @@
   .combo-panel:focus{outline:none}
   .combo-panel li{display:flex; align-items:center; min-height:48px; padding:12px 16px; font-size:16px; line-height:24px; color:var(--tinta-2); cursor:pointer; border-bottom:1px solid var(--lista-divisor)}
   .combo-panel li:last-child{border-bottom:0}
-  .combo-panel li:hover, .combo-panel li[data-activo="1"]{background:var(--lista-hover)}
-  .combo-panel li[aria-selected="true"]{background:var(--lista-hover); font-weight:700; color:var(--tinta)}
+  .combo-panel li:hover, .combo-panel li[data-activo="1"]{background:var(--menu-hover); color:var(--menu-hover-txt)}
+  .combo-panel li[aria-selected="true"]{background:var(--menu-hover); font-weight:700; color:var(--menu-hover-txt)}
   .combo-periodo .combo-panel{border-radius:0; border-color:var(--linea-input)}
   .combo-periodo .combo-panel li{min-height:57px}
 
@@ -327,7 +330,7 @@
   .inc-destacada li{padding:8px 16px; border-radius:4px; background:var(--verde-claro); font-size:16px; line-height:16px; color:var(--tinta-2)}
   .inc-destacada b{font-weight:700}
   .modal-inc .inc-tabs .vista{display:inline-flex; align-items:center; gap:8px}
-  .modal-inc .inc-tabs .vista .n{min-width:24px; padding:2px 8px; border-radius:999px; background:var(--th); color:var(--gris); font-size:13px; line-height:18px; font-weight:700; font-variant-numeric:tabular-nums; text-align:center}
+  .modal-inc .inc-tabs .vista .n{min-width:24px; padding:1px 8px; border-radius:999px; background:var(--th); color:var(--gris); font-size:14px; line-height:18px; font-weight:700; font-variant-numeric:tabular-nums; text-align:center}
   .modal-inc .inc-tabs .vista[aria-selected="true"] .n{background:var(--verde-claro); color:var(--verde)}
   .modal-inc .inc-cuerpo{overflow-y:auto}
   .modal-inc .inc-cuerpo thead th{position:sticky; top:0; z-index:1; background:var(--th); box-shadow:inset 0 -1px 0 var(--linea)}
@@ -336,7 +339,8 @@
   .modal-inc .inc-top .btn svg{margin-right:8px}
   .modal-inc .inc-tabs{gap:0}
   .modal-inc .inc-tabs .vista{padding:0 16px}
-  .modal-inc .inc-regla{margin:-8px 0 0; font-size:14px; line-height:22px; color:var(--gris)}
+  .modal-inc .inc-regla{margin:0; font-size:14px; line-height:22px; color:var(--gris)}
+  .modal-inc .tabla-m .paginador{padding:23px 24px 24px}
   .modal-inc .tabla-m thead th{height:56px; padding:8px 16px}
   .modal-inc .tabla-m tbody td{height:64px; padding:8px 16px; white-space:nowrap}
   .modal-inc .tabla-m td.corta{max-width:170px; overflow:hidden; text-overflow:ellipsis}
@@ -410,7 +414,7 @@
       <div class="nav-titulo">
         <span>Menú</span>
         <button type="button" id="btn-nav" aria-label="Contraer menú">
-          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 12H5"/><path d="m12 19-7-7 7-7"/></svg>
+          <svg width="20" height="18" viewBox="0 0 20 18" fill="currentColor" aria-hidden="true"><path d="M10.2107 15.8273L10.9178 15.1946C11.0852 15.0448 11.0852 14.802 10.9178 14.6523L5.37745 9.69514H17.5714C17.8081 9.69514 18 9.52345 18 9.31168V8.41694C18 8.20518 17.8081 8.03349 17.5714 8.03349H5.37745L10.9178 3.07632C11.0852 2.92658 11.0852 2.68378 10.9178 2.53401L10.2107 1.90137C10.0433 1.75163 9.77199 1.75163 9.6046 1.90137L2.12552 8.59318C1.95816 8.74292 1.95816 8.98571 2.12552 9.13548L9.6046 15.8273C9.77195 15.977 10.0433 15.977 10.2107 15.8273Z"/></svg>
         </button>
       </div>
       <div class="nav-lista" id="nav-lista"></div>
@@ -459,7 +463,7 @@
                 <div class="combo combo-periodo" data-combo="periodo">
                   <button class="combo-trigger" type="button" id="t-periodo" aria-haspopup="listbox" aria-expanded="false" aria-label="Periodo">
                     <span class="combo-valor">Selecciona un periodo</span>
-                    <span class="flecha" aria-hidden="true"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg></span>
+                    <span class="flecha" aria-hidden="true"><svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M22.3347 6.50013L22.0005 6.16592C21.7792 5.94469 21.4215 5.94469 21.2003 6.16592L12.0026 15.3682L2.80033 6.16592C2.5791 5.94469 2.22136 5.94469 2.00013 6.16592L1.66592 6.50013C1.44469 6.72136 1.44469 7.0791 1.66592 7.30033L11.5978 17.2369C11.8191 17.4582 12.1768 17.4582 12.398 17.2369L22.33 7.30033C22.5559 7.0791 22.5559 6.72136 22.3347 6.50013Z"/></svg></span>
                   </button>
                   <ul class="combo-panel" role="listbox" aria-label="Periodo" id="lista-periodo" hidden></ul>
                   <input type="hidden" id="periodo" value="">
@@ -664,14 +668,15 @@
     {t:"Distribución", i:"carpeta"}, {t:"Centralización", i:"carpeta"}, {t:"Excedentes y Excesos", i:"carpeta"},
     {t:"Devolución", i:"carpeta"}, {t:"Consultas por RUT", i:"persona"}, {t:"Configuraciones", i:"rueda"}
   ];
+  /* Íconos del DS, exportados del componente Plataforma / Sidebar de Figma. */
   var ICONOS = {
-    carpeta:'<path d="M3.6 7.2h5.1l1.7 2.1h10a1.6 1.6 0 0 1 1.6 1.6v6.5a1.6 1.6 0 0 1-1.6 1.6H3.6A1.6 1.6 0 0 1 2 17.4V8.8a1.6 1.6 0 0 1 1.6-1.6Z"/>',
-    persona:'<circle cx="12" cy="8.2" r="3.4"/><path d="M4.8 20a7.4 7.4 0 0 1 14.4 0"/>',
-    rueda:'<circle cx="12" cy="12" r="3.1"/><path d="M19.6 14.6a1.6 1.6 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.6 1.6 0 0 0-1.8-.3 1.6 1.6 0 0 0-1 1.5V21a2 2 0 0 1-4 0v-.1a1.6 1.6 0 0 0-1-1.5 1.6 1.6 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.6 1.6 0 0 0 .3-1.8 1.6 1.6 0 0 0-1.5-1H3a2 2 0 0 1 0-4h.1a1.6 1.6 0 0 0 1.5-1 1.6 1.6 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.6 1.6 0 0 0 1.8.3h.1a1.6 1.6 0 0 0 1-1.5V3a2 2 0 0 1 4 0v.1a1.6 1.6 0 0 0 1 1.5 1.6 1.6 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.6 1.6 0 0 0-.3 1.8v.1a1.6 1.6 0 0 0 1.5 1H21a2 2 0 0 1 0 4h-.1a1.6 1.6 0 0 0-1.5 1Z"/>'
+    carpeta:'<path d="M16.6644 8.58333H15.3338V7.20833C15.3338 6.44922 14.7365 5.83333 14.0004 5.83333H9.5558L7.77797 4H3.33338C2.59724 4 2 4.61589 2 5.375V13.625C2 14.3841 2.59724 15 3.33338 15H14.4449C14.9032 15 15.331 14.7565 15.5754 14.3526L17.795 10.6859C18.3505 9.77214 17.7116 8.58333 16.6644 8.58333ZM3.33338 5.54688C3.33338 5.45234 3.40838 5.375 3.50005 5.375H7.22517L9.00301 7.20833H13.8337C13.9254 7.20833 14.0004 7.28568 14.0004 7.38021V8.58333H6.22236C5.75568 8.58333 5.32233 8.83542 5.08066 9.24792L3.33338 12.2328V5.54688ZM14.4449 13.625H4.00007L6.14458 9.95833H16.6671L14.4449 13.625Z"/>',
+    persona:'<path d="M10 2C5.58065 2 2 5.58065 2 10C2 14.4194 5.58065 18 10 18C14.4194 18 18 14.4194 18 10C18 5.58065 14.4194 2 10 2ZM10 5.09677C11.5677 5.09677 12.8387 6.36774 12.8387 7.93548C12.8387 9.50323 11.5677 10.7742 10 10.7742C8.43226 10.7742 7.16129 9.50323 7.16129 7.93548C7.16129 6.36774 8.43226 5.09677 10 5.09677ZM10 16.1935C8.10645 16.1935 6.40968 15.3355 5.27419 13.9935C5.88065 12.8516 7.06774 12.0645 8.45161 12.0645C8.52903 12.0645 8.60645 12.0774 8.68064 12.1C9.1 12.2355 9.53871 12.3226 10 12.3226C10.4613 12.3226 10.9032 12.2355 11.3194 12.1C11.3935 12.0774 11.471 12.0645 11.5484 12.0645C12.9323 12.0645 14.1194 12.8516 14.7258 13.9935C13.5903 15.3355 11.8935 16.1935 10 16.1935Z"/>',
+    rueda:'<path d="M16.5407 9.38712L17.6005 8.79415C17.9143 8.61864 18.0664 8.26054 17.9725 7.92144C17.593 6.54948 16.8462 5.32315 15.8405 4.34734C15.5849 4.09934 15.1889 4.04909 14.8757 4.22441L13.8178 4.8166C13.4742 4.57824 13.1075 4.37276 12.7228 4.20305V3.01747C12.7228 2.84671 12.6646 2.68074 12.5572 2.54536C12.4498 2.40998 12.2993 2.31279 12.129 2.26889C10.7391 1.9106 9.26274 1.91015 7.87106 2.26886C7.52095 2.35912 7.27715 2.66631 7.27715 3.01744V4.20302C6.89254 4.37273 6.52582 4.57821 6.18216 4.81657L5.12425 4.22438C4.81105 4.04905 4.41515 4.09931 4.15953 4.34731C3.15384 5.32312 2.40703 6.54941 2.02746 7.92141C1.93364 8.26051 2.08574 8.61861 2.39947 8.79412L3.45931 9.38712C3.41871 9.79477 3.41871 10.2053 3.45931 10.6129L2.39947 11.2059C2.08574 11.3814 1.93364 11.7395 2.02746 12.0786C2.40703 13.4505 3.15384 14.6769 4.15953 15.6527C4.41515 15.9007 4.81105 15.9509 5.12425 15.7756L6.18216 15.1834C6.52582 15.4218 6.89253 15.6272 7.27715 15.7969V16.9825C7.27717 17.1533 7.33541 17.3193 7.4428 17.4546C7.55019 17.59 7.70073 17.6872 7.87099 17.7311C9.26094 18.0894 10.7373 18.0899 12.1289 17.7311C12.479 17.6409 12.7228 17.3337 12.7228 16.9825V15.797C13.1075 15.6273 13.4742 15.4218 13.8178 15.1835L14.8757 15.7756C15.1889 15.951 15.5849 15.9007 15.8405 15.6527C16.8462 14.6769 17.593 13.4506 17.9725 12.0786C18.0664 11.7395 17.9143 11.3814 17.6005 11.2059L16.5407 10.6129C16.5813 10.2049 16.5813 9.79519 16.5407 9.38712ZM14.7873 11.42L16.2458 12.2358C15.9834 12.9225 15.6025 13.5609 15.1192 14.1238L13.6604 13.3074C12.5959 14.1911 12.4403 14.2776 11.1253 14.7276V16.3599C10.3805 16.4831 9.61952 16.4831 8.87472 16.3599V14.7276C7.55989 14.2776 7.40373 14.1908 6.33959 13.3074L4.88081 14.1238C4.39753 13.5609 4.01656 12.9225 3.75421 12.2358L5.21265 11.42C4.9587 10.0878 4.95856 9.91293 5.21265 8.58006L3.75421 7.76428C4.01548 7.07948 4.39691 6.44012 4.88081 5.87625L6.33959 6.69267C7.40413 5.80889 7.55976 5.72241 8.87472 5.27238V3.64018C9.61952 3.51696 10.3805 3.51696 11.1253 3.64018V5.27241C12.4401 5.72241 12.5963 5.80925 13.6604 6.6927L15.1192 5.87628C15.6025 6.43915 15.9834 7.0776 16.2458 7.76431L14.7873 8.58009C15.0413 9.91235 15.0414 10.0871 14.7873 11.42ZM10 6.90325C8.23814 6.90325 6.80479 8.29244 6.80479 10C6.80479 11.7076 8.23814 13.0968 10 13.0968C11.7619 13.0968 13.1952 11.7076 13.1952 10C13.1952 8.29244 11.7619 6.90325 10 6.90325ZM10 11.5484C9.11905 11.5484 8.4024 10.8538 8.4024 10C8.4024 9.14625 9.11905 8.45164 10 8.45164C10.8809 8.45164 11.5976 9.14625 11.5976 10C11.5976 10.8538 10.8809 11.5484 10 11.5484Z"/>'
   };
   $("nav-lista").innerHTML = MENU.map(function(m){
     return '<button class="nav-item" type="button"' + (m.activo ? ' aria-current="page"' : '') + '>' +
-      '<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">' + ICONOS[m.i] + '</svg><span>' + m.t + '</span></button>';
+      '<svg width="20" height="20" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">' + ICONOS[m.i] + '</svg><span>' + m.t + '</span></button>';
   }).join("");
   $("btn-nav").addEventListener("click", function(){
     var abierto = $("app").getAttribute("data-nav") === "on";
@@ -684,7 +689,8 @@
   var SVG_AMPOLLETA = '<svg width="48" height="48" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18.5 30.5a9.5 9.5 0 1 1 11 0v3.5h-11z"/><path d="M19.5 38.5h9"/><path d="M21 42h6"/><path d="M24 4v3"/><path d="M38 12.5 36 14"/><path d="M10 12.5 12 14"/><path d="M43 26h-3"/><path d="M8 26H5"/></svg>';
   var SVG_AYUDA = '<svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.3" aria-hidden="true"><circle cx="8" cy="8" r="6.6"/><path d="M8 7.2v4" stroke-linecap="round"/><path d="M8 4.9h.01" stroke-linecap="round"/></svg>';
   var SVG_KEBAB = '<svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><circle cx="12" cy="5" r="1.8"/><circle cx="12" cy="12" r="1.8"/><circle cx="12" cy="19" r="1.8"/></svg>';
-  var SVG_FLECHA = '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>';
+  /* Flecha del input del DS (exportada de Figma). */
+  var SVG_FLECHA = '<svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M22.3347 6.50013L22.0005 6.16592C21.7792 5.94469 21.4215 5.94469 21.2003 6.16592L12.0026 15.3682L2.80033 6.16592C2.5791 5.94469 2.22136 5.94469 2.00013 6.16592L1.66592 6.50013C1.44469 6.72136 1.44469 7.0791 1.66592 7.30033L11.5978 17.2369C11.8191 17.4582 12.1768 17.4582 12.398 17.2369L22.33 7.30033C22.5559 7.0791 22.5559 6.72136 22.3347 6.50013Z"/></svg>';
 
   /* ── Periodos ────────────────────────────────────────────────────────── */
   /* La deuda es total a pagar menos total pagado; total pagadores es EEPC + NN. */
@@ -824,13 +830,12 @@
     total:["Pactado más la compensación.", "La compensación puede ser a favor o en contra."],
     eepc:["EEPC: Entidad Encargada del Pago de Cotizaciones.", "Cuenta solo las que figuran en el contrato."],
     comp:["Monto que otro afiliado compensa sobre esta cotización.", "Puede ser a favor o en contra."],
-    tipoPag:["EEPC: figura en el contrato del afiliado.", "NN: pagó sin figurar en el contrato."],
-    nAfil:["Afiliados por los que paga este pagador en el periodo."]
+    tipoPag:["EEPC: figura en el contrato del afiliado.", "NN: pagó sin figurar en el contrato."]
   };
   var COL_AFILIADOS = [
     {k:"afiliado", t:"RUT y nombre\nafiliado", w:212},
     {k:"marca", t:"Marca", w:140},
-    {k:"periodo", t:"Periodo de\nremuneración", w:140},
+    {k:"periodo", t:"Periodo de\nremuneración", w:120},
     {k:"tipoCot", t:"Tipo\ncotizante", w:120, ayuda:"tipoCot"},
     {k:"total", t:"Total a\npagar", w:130, ayuda:"total"},
     {k:"pagado", t:"Pagado", w:115},
@@ -845,12 +850,12 @@
   var COL_PAGADORES = [
     {k:"pagador", t:"RUT y nombre\npagador", w:232},
     {k:"afiliado", t:"RUT y nombre\nafiliado", w:200},
-    {k:"periodo", t:"Periodo de\nremuneración", w:140},
+    {k:"periodo", t:"Periodo de\nremuneración", w:120},
     {k:"pactado", t:"Pactado", w:130},
     {k:"pagado", t:"Pagado", w:115},
     {k:"deuda", t:"Deuda", w:115},
     {k:"tipoPag", t:"Tipo de\npagador", w:120, ayuda:"tipoPag"},
-    {k:"nAfil", t:"N° de\nafiliados", w:120, ayuda:"nAfil"},
+    {k:"tipoCot", t:"Tipo\ncotizante", w:120, ayuda:"tipoCot"},
     {k:"medio", t:"Medio de\npago", w:130},
     {k:"acciones", t:"Acciones", w:100, fijaDer:true}
   ];
@@ -874,7 +879,7 @@
     return {id:l.id, tipoFila:"l", _l:l, _a:a, _pagado:pagado, _pactado:l.pactado, _deuda: nn ? null : l.pactado - pagado,
       pagador:l.pag, afiliado:[a.rut, a.nombre], periodo:p.rem,
       pactado: nn ? "—" : monto(l.pactado), pagado:monto(pagado), deuda: nn ? "—" : monto(l.pactado - pagado),
-      tipoPag:l.tipo, nAfil:miles(l.nAfil), medio: !pagos.length ? "—" : pagos.length === 1 ? pagos[0].medio : pagos.length + " pagos"};
+      tipoPag:l.tipo, tipoCot:a.tipo, medio: !pagos.length ? "—" : pagos.length === 1 ? pagos[0].medio : pagos.length + " pagos"};
   }
 
   /* ── Estado ──────────────────────────────────────────────────────────── */
@@ -885,23 +890,24 @@
   /* ── Filtros: se filtra por lo que muestra cada tabla ────────────────── */
   var CAMPOS = {
     afiliados:[
+      /* Filas: RUT y marca · montos · pago y medio · tipo cotizante (el hueco queda al final). */
       {id:"rutAfi", tipo:"texto", label:"RUT afiliado", ph:"Ingresa RUT"},
       {id:"marca", tipo:"combo", label:"Marca", ops:[["Sin marca","Sin marca"],["Especial","Especial"],["Reputacional","Reputacional"]]},
-      {id:"tipoCot", tipo:"combo", label:"Tipo cotizante", ops:[["D","D - Dependiente","Dependiente"],["I","I - Independiente","Independiente"],["P","P - Pensionado","Pensionado"],["V","V - Voluntario","Voluntario"]]},
+      {id:"desde", tipo:"monto", label:"Deuda desde", ph:"Ingresa monto"},
+      {id:"hasta", tipo:"monto", label:"Deuda hasta", ph:"Ingresa monto"},
       {id:"pago", tipo:"combo", label:"Pago", ops:[["sin","Sin pago"],["parcial","Pago parcial"]]},
       {id:"medio", tipo:"combo", label:"Medio de pago", ops:[["CAJA","CAJA"],["PAC","PAC"],["PAT","PAT"],["PREVIRED","PREVIRED"]]},
-      /* Hueco para que Deuda desde y Deuda hasta queden en la misma fila. */
-      {tipo:"vacio"},
-      {id:"desde", tipo:"monto", label:"Deuda desde", ph:"Ingresa monto"},
-      {id:"hasta", tipo:"monto", label:"Deuda hasta", ph:"Ingresa monto"}
+      {id:"tipoCot", tipo:"combo", label:"Tipo cotizante", ops:[["D","D - Dependiente","Dependiente"],["I","I - Independiente","Independiente"],["P","P - Pensionado","Pensionado"],["V","V - Voluntario","Voluntario"]]}
     ],
     pagadores:[
+      /* Mismo orden que Afiliados: RUT · montos · pago y medio · tipo (el hueco queda al final). */
       {id:"rutPag", tipo:"texto", label:"RUT pagador", ph:"Ingresa RUT"},
       {id:"rutAfi", tipo:"texto", label:"RUT afiliado", ph:"Ingresa RUT"},
-      {id:"tipoPag", tipo:"combo", label:"Tipo de pagador", ops:[["EEPC","EEPC"],["NN","NN"]]},
-      {id:"pago", tipo:"combo", label:"Pago", ops:[["sin","Sin pago"],["parcial","Pago parcial"]]},
       {id:"desde", tipo:"monto", label:"Deuda desde", ph:"Ingresa monto"},
-      {id:"hasta", tipo:"monto", label:"Deuda hasta", ph:"Ingresa monto"}
+      {id:"hasta", tipo:"monto", label:"Deuda hasta", ph:"Ingresa monto"},
+      {id:"pago", tipo:"combo", label:"Pago", ops:[["sin","Sin pago"],["parcial","Pago parcial"]]},
+      {id:"medio", tipo:"combo", label:"Medio de pago", ops:[["CAJA","CAJA"],["PAC","PAC"],["PAT","PAT"],["PREVIRED","PREVIRED"]]},
+      {id:"tipoPag", tipo:"combo", label:"Tipo de pagador", ops:[["EEPC","EEPC"],["NN","NN"]]}
     ]
   };
   function filtrosActivos(){ return estado.filtros[estado.vista]; }
@@ -930,6 +936,8 @@
       if (k === "rutPag") return incluye(f._l.pag[0], v);
       if (k === "rutAfi") return incluye(f._a.rut, v);
       if (k === "tipoPag") return f.tipoPag === v;
+      /* La línea entra si alguno de sus pagos del periodo usó ese medio. */
+      if (k === "medio") return pagosDe(f._l, periodoActual()).some(function(x){ return x.medio === v; });
       if (k === "pago") return !nn && (v === "sin" ? f._pagado === 0 : f._pagado > 0 && f._pagado < f._pactado);
       if (k === "desde") return !nn && f._deuda >= numero(v);
       if (k === "hasta") return !nn && f._deuda <= numero(v);
@@ -1149,8 +1157,11 @@
   function esqueleto(){
     mostrar("bloque", false); mostrar("vistas", true); pintarCabecera();
     mostrar("filtros-aplicados", false); mostrar("sin-resultados", false); mostrar("tabla-datos", true);
-    ["t-deuda","t-deuda-uf","t-afiliados","t-total","t-pagado","t-eepc","t-eepc-uf","t-pagadores","t-pag-eepc","t-pag-nn"].forEach(function(id, i){
-      $(id).innerHTML = '<span class="skel" style="width:' + (i === 0 || i === 5 ? 80 : 60) + '%"></span>';
+    /* Medidas del skeleton de Figma: monto 190×20, UF 120×16 y métricas 96×16. */
+    var MEDIDAS = {"t-deuda":[190,20], "t-eepc":[190,20], "t-deuda-uf":[120,16], "t-eepc-uf":[120,16]};
+    ["t-deuda","t-deuda-uf","t-afiliados","t-total","t-pagado","t-eepc","t-eepc-uf","t-pagadores","t-pag-eepc","t-pag-nn"].forEach(function(id){
+      var m = MEDIDAS[id] || [96, 16];
+      $(id).innerHTML = '<span class="skel" style="width:' + m[0] + 'px; height:' + m[1] + 'px"></span>';
     });
     mostrar("totales", true);
     esqueletoTabla();
@@ -1175,7 +1186,7 @@
 
   /* ── Selector de periodo ─────────────────────────────────────────────── */
   $("lista-periodo").innerHTML = Object.keys(PERIODOS).map(function(k){
-    return '<li role="option" data-valor="' + k + '" aria-selected="false">' + PERIODOS[k].opcion + '</li>';
+    return '<li role="option" data-valor="' + k + '" data-mostrar="' + PERIODOS[k].etiqueta + '" aria-selected="false">' + PERIODOS[k].opcion + '</li>';
   }).join("");
 
   $("btn-seleccionar").addEventListener("click", function(){
@@ -1186,7 +1197,10 @@
     estado.filtros = {afiliados:{}, pagadores:{}};
     pintarVistas(); cerrarMenuExportar(); cerrarMenuFila();
     var p = periodoActual(), consulta = p.carga === "skeleton";
-    cargando(btn, true); pintarAviso(null); pintarPeriodo(p);
+    /* Un mes cerrado ya tiene su estado: el aviso aparece de inmediato y solo
+       los totales y la tabla cargan con skeleton. Al generar, el aviso espera. */
+    if (!consulta) cargando(btn, true);
+    pintarAviso(consulta ? p.aviso : null); pintarPeriodo(p);
     if (consulta) esqueleto();
     else bloque("Generando deuda del periodo", "Puede tardar unos minutos; mantén esta pantalla abierta.", "rueda");
     window.setTimeout(function(){ cargando(btn, false); render(true); }, consulta ? 1200 : 1800);
@@ -1194,7 +1208,7 @@
 
   /* ── Pestañas: al cambiar, la tabla entra con skeleton ───────────────── */
   function pintarVistas(){
-    Array.prototype.forEach.call(document.querySelectorAll(".vista"), function(t){
+    Array.prototype.forEach.call(document.querySelectorAll("#vistas .vista"), function(t){
       var activa = t.getAttribute("data-vista") === estado.vista;
       t.setAttribute("aria-selected", String(activa)); t.tabIndex = activa ? 0 : -1;
       if (activa) $("tabla-card").setAttribute("aria-labelledby", t.id);
