@@ -14,11 +14,11 @@ Estos cinco prototipos muestran funcionando el módulo **Deuda de cotizaciones**
 
 | Prototipo | Objetivo | Link |
 |---|---|---|
-| Principal | Recorrer el flujo completo cuando todo sale bien | [happy-path-deuda.html](https://jzamorano-ui.github.io/prototipo-deuda/happy-path-deuda.html) |
-| Deuda con inconsistencias | Ver el aviso y el detalle de los registros que no pasaron la validación | [inconsistencias.html](https://jzamorano-ui.github.io/prototipo-deuda/inconsistencias.html) |
-| Periodo sin deuda | Ver la pantalla cuando el periodo no tiene deuda | [sin-deuda.html](https://jzamorano-ui.github.io/prototipo-deuda/sin-deuda.html) |
-| Error al generar la deuda | Ver qué pasa cuando el sistema no logra generar la deuda | [error-generar.html](https://jzamorano-ui.github.io/prototipo-deuda/error-generar.html) |
-| Error al exportar | Ver qué pasa cuando falla la descarga del archivo | [error-exportar.html](https://jzamorano-ui.github.io/prototipo-deuda/error-exportar.html) |
+| Principal | Recorrer el flujo completo cuando todo sale bien | [happy-path-deuda.html](https://jzamorano-ui.github.io/proyecto-deuda/happy-path-deuda.html) |
+| Deuda con inconsistencias | Ver el aviso y el detalle de los registros que no pasaron la validación | [inconsistencias.html](https://jzamorano-ui.github.io/proyecto-deuda/inconsistencias.html) |
+| Periodo sin deuda | Ver la pantalla cuando el periodo no tiene deuda | [sin-deuda.html](https://jzamorano-ui.github.io/proyecto-deuda/sin-deuda.html) |
+| Error al generar la deuda | Ver qué pasa cuando el sistema no logra generar la deuda | [error-generar.html](https://jzamorano-ui.github.io/proyecto-deuda/error-generar.html) |
+| Error al exportar | Ver qué pasa cuando falla la descarga del archivo | [error-exportar.html](https://jzamorano-ui.github.io/proyecto-deuda/error-exportar.html) |
 
 En todos se parte igual: elegir un periodo en el selector y presionar **Seleccionar**.
 
