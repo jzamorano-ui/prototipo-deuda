@@ -42,7 +42,6 @@ Qué observar:
 - El mes en curso se genera y entra con loader y mensaje. Un mes anterior ya existe y entra con skeleton.
 - Al cambiar de pestaña, la tabla entra con skeleton; los totales no se mueven.
 - Exportar ofrece siempre «Deuda consolidada» y la deuda de la pestaña activa.
-- Un pagador NN solo tiene «Detalle de pago» en su menú.
 - Las dos variantes de septiembre existen solo para mostrar los dos estados del mismo mes. En la plataforma hay una a la vez.
 
 ### Deuda con inconsistencias
