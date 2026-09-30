@@ -328,7 +328,14 @@
   .combo-periodo .combo-panel li{min-height:57px}
 
   /* ── Modal de inconsistencias: modal de consulta con pestañas por tipo ─── */
-  .modal-inc{width:960px}
+  /* Alto máximo: 85% del alto de la pantalla. Cabecera, resumen, pestañas, regla y
+     paginador quedan fijos; la tabla cede el espacio y hace scroll por dentro. */
+  .modal-inc{width:960px; max-height:85vh; display:flex; flex-direction:column; overflow:hidden}
+  .modal-inc .modal-head{flex:none}
+  .modal-inc .modal-cuerpo{flex:1 1 auto; min-height:0; gap:20px}
+  .modal-inc .modal-cuerpo > *{flex:none}
+  .modal-inc #i-contenido, .modal-inc .tabla-m{flex:1 1 auto; min-height:0; display:flex; flex-direction:column}
+  .modal-inc .tabla-m .paginador{flex:none}
   /* Información destacada, como en Excedentes y Excesos: chips verde claro con «Etiqueta: valor» */
   .inc-destacada{display:flex; flex-wrap:wrap; gap:12px; margin:0; padding:0; list-style:none}
   .inc-destacada li{padding:8px 16px; border-radius:4px; background:var(--verde-claro); font-size:16px; line-height:16px; color:var(--tinta-2)}
@@ -336,7 +343,7 @@
   .modal-inc .inc-tabs .vista{display:inline-flex; align-items:center; gap:8px}
   .modal-inc .inc-tabs .vista .n{min-width:24px; padding:1px 8px; border-radius:999px; background:var(--th); color:var(--gris); font-size:14px; line-height:18px; font-weight:700; font-variant-numeric:tabular-nums; text-align:center}
   .modal-inc .inc-tabs .vista[aria-selected="true"] .n{background:var(--verde-claro); color:var(--verde)}
-  .modal-inc .inc-cuerpo{overflow-y:auto}
+  .modal-inc .inc-cuerpo{flex:0 1 auto; min-height:0; overflow-y:auto}
   .modal-inc .inc-cuerpo thead th{position:sticky; top:0; z-index:1; background:var(--th); box-shadow:inset 0 -1px 0 var(--linea)}
   .modal-inc .inc-top{display:flex; align-items:flex-end; justify-content:space-between; gap:24px; flex-wrap:wrap}
   .modal-inc .inc-top .btn{height:44px; padding:0 18px}
