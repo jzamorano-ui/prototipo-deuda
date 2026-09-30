@@ -1,72 +1,120 @@
-# Prototipo · Deuda de cotizaciones
+# Deuda de cotizaciones · prototipos HTML
 
-Prototipo navegable del módulo **Cobranza › Deuda de cotizaciones**, fase 1
-(deuda flujo). Reproduce el diseño de Figma (`RC-Gestión deuda`, sección
-«Generación deuda») como HTML funcional, para recorrer los flujos en vez de
-mirar pantallas estáticas.
+Versión: v1.0 · Fecha: 30-09-2026
 
-## Qué se puede hacer
+Estos cinco prototipos muestran funcionando el módulo **Deuda de cotizaciones** del Sistema de Recaudación CME, tal como está en el handoff de Figma.
 
-Elige un periodo en el selector y presiona **Seleccionar**:
+## Qué es y qué no es
 
-| Periodo | Situación |
-|---|---|
-| Septiembre 2026 (en curso) | Deuda preliminar: se genera con loader. El recorrido principal |
-| Septiembre 2026 (cerrado) | El mismo mes recién cerrado: se genera por primera vez, mismos montos |
-| Septiembre 2026 (inconsistencias) | Registros por revisar y su panel de detalle (solo visualización) |
-| Agosto 2026 · Julio 2026 · Junio 2026 | Meses ya cerrados: se consultan y entran con skeleton |
+- **Es una referencia** de comportamiento, textos, estados y medidas. Sirve para ver cómo responde cada pantalla: qué carga, qué cambia y qué dice.
+- **No es código de producción.** Usa datos de ejemplo y no se conecta a ningún servicio.
+- **El diseño manda.** Si algo difiere entre un prototipo y el handoff de Figma, vale Figma.
 
-Las tres variantes de Septiembre existen para mostrarlas sin cambiar de mes;
-en la plataforma solo existe una a la vez.
+## Los cinco prototipos
 
-Desde ahí:
+| Prototipo | Objetivo | Link |
+|---|---|---|
+| Principal | Recorrer el flujo completo cuando todo sale bien | [happy-path-deuda.html](https://jzamorano-ui.github.io/prototipo-deuda/happy-path-deuda.html) |
+| Deuda con inconsistencias | Ver el aviso y el detalle de los registros que no pasaron la validación | [inconsistencias.html](https://jzamorano-ui.github.io/prototipo-deuda/inconsistencias.html) |
+| Periodo sin deuda | Ver la pantalla cuando el periodo no tiene deuda | [sin-deuda.html](https://jzamorano-ui.github.io/prototipo-deuda/sin-deuda.html) |
+| Error al generar la deuda | Ver qué pasa cuando el sistema no logra generar la deuda | [error-generar.html](https://jzamorano-ui.github.io/prototipo-deuda/error-generar.html) |
+| Error al exportar | Ver qué pasa cuando falla la descarga del archivo | [error-exportar.html](https://jzamorano-ui.github.io/prototipo-deuda/error-exportar.html) |
 
-- **Pestañas Afiliados y Pagadores.** Al cambiar, la tabla entra con skeleton.
-- **Ver filtros.** Cada pestaña tiene sus filtros y los chips muestran el conteo.
-- **Exportar.** Dos opciones: deuda consolidada y la de la pestaña activa.
-- **Menú ⋮ de cada fila.**
-  - Afiliados: Ver pagos asociados, Ver EEPC relacionadas y Agregar o Ver marca.
-  - Pagadores: Detalle de pago y Detalle de cotizaciones. Un pagador NN solo
-    tiene Detalle de pago: no figura en el contrato, así que no tiene
-    cotizaciones ni deuda que detallar.
-- **Marca (Especial o Reputacional).** Se agrega, se ve y se edita. El detalle guarda el
-  historial de observaciones con nombre, fecha y hora; la tabla muestra la
-  más reciente.
+En todos se parte igual: elegir un periodo en el selector y presionar **Seleccionar**.
 
-## Reglas que el prototipo aplica
+## Cómo recorrer cada uno
 
-- **Tabla.** Ocupa el ancho disponible; si no cabe, hay scroll horizontal con
-  la primera columna y Acciones fijas, y su sombra aparece solo cuando hay
-  columnas pasando por debajo.
-- **Cierre de modales.**
-  - Consulta: se cierran con ✕, Esc o un clic fuera.
-  - Con acciones (filtros y marca): se cierran con sus botones, sin ✕. Un clic
-    fuera no los cierra y Esc equivale a Cancelar.
-- **Montos.** Van en $ y en UF (3 decimales, UF a $38.489); los ceros se ven
-  como «$0 / 0,000 UF» y lo que no aplica, como «—». Los periodos se muestran
-  como mes y año («Agosto 2026»); las fechas reales, como la de pago, en
-  dd/mm/aaaa.
-- **Cuadre de los datos.** Lo pagado por cada afiliado es la suma de sus
-  pagadores (incluidos los NN). Detalle de cotizaciones muestra solo los
-  afiliados con deuda de ese pagador.
+### Principal
+
+Corresponde a la página «Happy path» del handoff y a «Deuda de meses anteriores».
+
+1. Elegir un periodo:
+   - «Septiembre 2026 (en curso)»: deuda preliminar.
+   - «Septiembre 2026 (cerrado)»: el mismo mes con la deuda final.
+   - Agosto, Julio o Junio 2026: meses anteriores.
+2. Cambiar entre las pestañas **Afiliados** y **Pagadores**.
+3. Abrir **Ver filtros**, aplicar un criterio y después **Limpiar filtros**.
+4. Abrir **Exportar** y elegir una opción.
+5. Abrir el menú ⋮ de una fila y entrar a cada detalle.
+
+Qué observar:
+
+- El mes en curso se genera y entra con loader y mensaje. Un mes anterior ya existe y entra con skeleton.
+- Al cambiar de pestaña, la tabla entra con skeleton; los totales no se mueven.
+- Exportar ofrece siempre «Deuda consolidada» y la deuda de la pestaña activa.
+- Un pagador NN solo tiene «Detalle de pago» en su menú.
+- Las dos variantes de septiembre existen solo para mostrar los dos estados del mismo mes. En la plataforma hay una a la vez.
+
+### Deuda con inconsistencias
+
+Corresponde a «Deuda con inconsistencias» en la página «Errores / casuísticas».
+
+1. Elegir «Septiembre 2026 (varios tipos)» y presionar «Ver detalle» en el aviso.
+2. Repetir con «Septiembre 2026 (un solo tipo)».
+
+Qué observar:
+
+- Con varios tipos, el modal muestra una pestaña por tipo, con su conteo y su regla.
+- Con un solo tipo, el modal no lleva pestañas.
+- El modal nunca supera el 85% del alto de la pantalla: si no cabe, la tabla hace scroll por dentro y el resto queda fijo.
+- Qué se considera inconsistencia está pendiente de definición de producto. Los tipos y registros son de ejemplo y muestran la estructura.
+
+### Periodo sin deuda
+
+Corresponde a «Consulta sin deuda».
+
+1. Elegir «Septiembre 2026».
+
+Qué observar:
+
+- Después del loader aparece el estado vacío, sin aviso, totales, tabla ni exportación.
+
+### Error al generar la deuda
+
+Corresponde a «Errores · Error al generar la deuda».
+
+1. Elegir «Septiembre 2026».
+
+Qué observar:
+
+- Después del loader aparece el modal «Tuvimos un problema».
+- El modal se cierra solo con «Entendido» y la pantalla queda sin periodo seleccionado.
+
+### Error al exportar
+
+Corresponde a «Errores · Error al exportar».
+
+1. Elegir «Agosto 2026».
+2. Abrir **Exportar** y elegir cualquier opción.
+
+Qué observar:
+
+- El botón queda en carga y después aparece el aviso de error.
+- La tabla sigue disponible y se puede reintentar.
+
+## Dónde está lo demás
+
+- **Pantallas, medidas y notas de cada estado:** handoff de Figma.
+  - [Happy path](https://www.figma.com/design/WVlFKjquEjndqYyrQahokS/RC-Handoff-Gesti%C3%B3n-deuda?node-id=5019-96440)
+  - [Errores / casuísticas](https://www.figma.com/design/WVlFKjquEjndqYyrQahokS/RC-Handoff-Gesti%C3%B3n-deuda?node-id=5019-140337)
+- **Racionales y reglas del módulo:** están en el Read me del handoff de Figma. Aquí no se repiten, para que exista una sola versión.
 
 ## Sobre los datos
 
-Todos los datos son de muestra; los RUT, nombres y montos son ficticios.
-Agosto y Septiembre usan las cifras del diseño. Julio y Junio son de ejemplo,
-con los mismos afiliados de Agosto.
-
-Después de los seis afiliados del diseño hay 60 más de relleno, para que
-«Mostrar por página» con 25 o 50 muestre filas distintas. No cambian los
-totales ni los conteos de los filtros.
-
-## Tipografía
-
-La interfaz está tipografiada en **Interstate**, que es licencia comercial y no
-se distribuye acá. Quien no la tenga instalada verá el prototipo con Archivo,
-que es algo más ancha.
+Los nombres, RUT y montos son de ejemplo. Los totales, las filas y los detalles cuadran entre sí, así que se puede seguir un mismo caso de una pantalla a otra.
 
 ## Archivos
 
-- `happy-path-deuda.html`: el prototipo, autocontenido salvo la fuente.
-- `logo-esencial.png` y `avatar.png`: exportados del archivo de diseño.
+```
+happy-path-deuda.html    principal
+inconsistencias.html
+sin-deuda.html
+error-generar.html
+error-exportar.html
+recursos/
+  estilos.css            estilos, con los tokens de color y tipografía al inicio
+  datos.js               datos de ejemplo
+  app.js                 comportamiento
+```
+
+Los cinco HTML comparten los archivos de `recursos/`. Funcionan publicados y también abriéndolos directamente desde la carpeta.
